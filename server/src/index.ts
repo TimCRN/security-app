@@ -1,3 +1,4 @@
+import {checkDBConnection} from './services/db.service';
 import express, {Request, Response} from 'express';
 
 const PORT = process.env.PORT || 8080;
@@ -10,6 +11,11 @@ if (process.env.ENV !== 'prod') {
 }
 
 app.get('/', async (req: Request, res: Response) => {
+  res.send('OK');
+});
+
+app.get('/db', async (req: Request, res: Response) => {
+  await checkDBConnection();
   res.send('OK');
 });
 
