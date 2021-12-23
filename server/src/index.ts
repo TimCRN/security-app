@@ -1,10 +1,12 @@
 import {connectDB} from './services/db.service';
 import express, {Request, Response} from 'express';
 import {devicesRouter} from './routes/devices.route';
+import cors from 'cors';
 
 const PORT = process.env.PORT || 8080;
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 (async () => {
   await connectDB();
