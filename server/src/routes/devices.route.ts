@@ -6,17 +6,11 @@ export const devicesRouter = Router()
 
 devicesRouter.get('/', controller.getAllDevices)
 
-devicesRouter.get('/:id', (req, res) => {
-
-})
+devicesRouter.get('/:id', controller.getDevice)
 
 devicesRouter.post('/', controller.createDevice)
 
-devicesRouter.patch('/:id', (req, res) => {
+devicesRouter.patch('/:id', controller.updateDevice)
 
-})
-
-devicesRouter.delete('/:id', (req, res) => {
-
-})
+devicesRouter.delete('/:id', controller.deleteDevice)
 
