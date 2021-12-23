@@ -3,5 +3,3 @@
 /keys
 *.vscode
 *DS_Store
-.env
-/certs
