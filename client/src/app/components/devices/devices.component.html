@@ -1,10 +1,16 @@
 <div class="container">
-    <div *ngFor="let device of devices">
-        <div class="col">
-            {{device._id}}
-        </div>
-        <div class="col">
-            {{device.name}}
-        </div>
-    </div>
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Device name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let device of devices">
+                <td>{{device._id}}</td>
+                <td>{{device.name}}<button type="button" class="btn btn-danger" style="float: right;">Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
