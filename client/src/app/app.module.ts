@@ -6,6 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DevicesComponent } from './components/devices/devices.component';
 
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +20,13 @@ import { DevicesComponent } from './components/devices/devices.component';
   imports: [
     BrowserModule,
     HttpClientModule, 
-    AppRoutingModule
+    AppRoutingModule,
+    CommonModule,
+    BrowserAnimationsModule, 
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
