@@ -1,0 +1,24 @@
+// This partial is a .scss file instead of .sass,
+// as .sass does not allow for multiline statements,
+// such as the one used to define the grid-template areas
+
+#page-wrapper {
+  display: grid;
+  min-height: 100vh;
+  grid-template:
+    "header" 70px
+    "main" 1fr
+    "footer" 100px / 1fr
+}
+
+header {
+  grid-area: header
+}
+
+main {
+  grid-area: main
+}
+
+footer {
+  grid-area: footer
+}
