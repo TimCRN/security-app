@@ -1,6 +1,6 @@
 {
-  "name": "security-app",
-  "short_name": "security-app",
+  "name": "Security Dashboard app",
+  "short_name": "Security Dash",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
