@@ -21,8 +21,16 @@
   --surface4-light: hsl(var(--brand-hue) 8% 89%)
 
   // Dark theme
+  --brand-dark: hsl(var(--brand-hue) calc(var(--brand-saturation) / 2) calc(var(--brand-lightness)))
+  --text1-dark: hsl(var(--brand-hue) 15% 85%)
+  --text2-dark: hsl(var(--brand-hue) 5% 65%)
+  --surface1-dark: hsl(var(--brand-hue) 10% 11%)
+  --surface2-dark: hsl(var(--brand-hue) 10% 17%)
+  --surface3-dark: hsl(var(--brand-hue) 5%  20%)
+  --surface4-dark: hsl(var(--brand-hue) 5% 25%)
 
 :root
+  color-scheme: light
   --brand: var(--brand-light)
   --text1: var(--text1-light)
   --text2: var(--text2-light)
@@ -31,7 +39,17 @@
   --surface3: var(--surface3-light)
   --surface4: var(--surface4-light)
 
+  @media (prefers-color-scheme: dark)
+    color-scheme: dark
+    --brand: var(--brand-dark)
+    --text1: var(--text1-dark)
+    --text2: var(--text2-dark)
+    --surface1: var(--surface1-dark)
+    --surface2: var(--surface2-dark)
+    --surface3: var(--surface3-dark)
+    --surface4: var(--surface4-dark)
+
 html, body
-  background: #EDF2F4
-  // background: var(--surface)
+  background: var(--surface2)
   font-family: var(--font-sans)
+  accent-color: var(--brand)
