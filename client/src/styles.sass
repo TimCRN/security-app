@@ -1,8 +1,37 @@
+@import "https://unpkg.com/open-props"
+// @import "https://unpkg.com/open-props/normalize.min.css"
+
 *
   margin: 0
   padding: 0
   box-sizing: border-box
 
+  // Alt 343
+  --brand-hue: 219
+  --brand-saturation: 86%
+  --brand-lightness: 54%
+
+  // Light theme
+  --brand-light: hsl(var(--brand-hue) var(--brand-saturation) var(--brand-lightness))
+  --text1-light: hsl(var(--brand-hue) var(--brand-saturation) 10%)
+  --text2-light: hsl(var(--brand-hue) 8% 30%)
+  --surface1-light: hsl(var(--brand-hue) 20% 99%)
+  --surface2-light: hsl(var(--brand-hue) 24% 95%)
+  --surface3-light: hsl(var(--brand-hue) 43% 94%)
+  --surface4-light: hsl(var(--brand-hue) 8% 89%)
+
+  // Dark theme
+
+:root
+  --brand: var(--brand-light)
+  --text1: var(--text1-light)
+  --text2: var(--text2-light)
+  --surface1: var(--surface1-light)
+  --surface2: var(--surface2-light)
+  --surface3: var(--surface3-light)
+  --surface4: var(--surface4-light)
+
 html, body
   background: #EDF2F4
-  font-family: sans-serif
+  // background: var(--surface)
+  font-family: var(--font-sans)
