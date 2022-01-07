@@ -10,6 +10,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { DeviceItemComponent } from './components/device-item/device-item.component';
 import { EventItemComponent } from './components/event-item/event-item.component';
+import { LoginComponent } from './routes/login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { EventItemComponent } from './components/event-item/event-item.component
     FooterComponent,
     HomeComponent,
     DeviceItemComponent,
-    EventItemComponent
+    EventItemComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
