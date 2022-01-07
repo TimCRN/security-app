@@ -8,13 +8,17 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './routes/home/home.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { DeviceItemComponent } from './components/device-item/device-item.component';
+import { EventItemComponent } from './components/event-item/event-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    DeviceItemComponent,
+    EventItemComponent
   ],
   imports: [
     BrowserModule,
