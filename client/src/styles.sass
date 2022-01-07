@@ -79,8 +79,8 @@ html, body
   transition: transform .15s ease
   will-change: transform
 
-  // Box shadow is animated on hover using a pseudo element
-  // Animating the opacity of the pseudo element is more performant
+  // Box shadow is animated on hover using a pseudo element:
+  // Animating opacity (of the pseudo element) is more performant than animating box-shadow
   &::after
     content: ''
     position: absolute
