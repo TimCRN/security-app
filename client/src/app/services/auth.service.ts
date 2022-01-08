@@ -12,7 +12,6 @@ export class AuthService {
     private router: Router
   ) {
     afAuth.authState.subscribe((user: unknown) => {
-      console.log(user);
       if (!!user) {
         this.router.navigate(['/']);
       } else {
@@ -21,6 +20,11 @@ export class AuthService {
     })
   }
 
+  /**
+   * Sign in user with credentials
+   * @param email user email
+   * @param password user password
+   */
   async signInWithCredentials(email: string, password: string) {
     try {
       const loginRes = await this.afAuth.signInWithEmailAndPassword(email, password);
@@ -30,6 +34,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Register user with credentials
+   * @param email user email
+   * @param password user password
+   */
   async registerWithCredentials(email: string, password: string) {
     try {
       const registerRes = await this.afAuth.createUserWithEmailAndPassword(email, password);
@@ -39,6 +48,7 @@ export class AuthService {
     }
   }
 
+  /** Send verification email to the currently logged in user */
   async verifyEmail() {
     const user = await this.afAuth.currentUser;
     user?.sendEmailVerification()
@@ -46,6 +56,10 @@ export class AuthService {
       .catch(() => console.error('Something went wrong while sending the verification email'));
   }
 
+  /**
+   * Sign out user
+   * - Redirects to /login
+   */
   async signOut() {
     await this.afAuth.signOut();
     this.router.navigate(['/login']);
