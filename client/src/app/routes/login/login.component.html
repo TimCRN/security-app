@@ -4,11 +4,11 @@
     <h1>Login</h1>
 
     <div id="manual-login-container">
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password">
+      <input type="email" placeholder="Email" #email required>
+      <input type="password" placeholder="Password" #password required>
       <div class="button-wrapper">
-        <button id="login-btn" class="button">Log in</button>
-        <button id="register-btn" class="button inverse">Register</button>
+        <button (click)="onLogin()" id="login-btn" class="button">Log in</button>
+        <button (click)="auth.registerWithCredentials(email.value, password.value)" id="register-btn" class="button inverse">Register</button>
       </div>
     </div>
 

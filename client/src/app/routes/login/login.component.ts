@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public auth: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  onLogin() {
+    // this.auth.verifyEmail();
+    this.auth.signOut();
+  }
+
+  async onRegister(email: string, password: string) {
+    const registerRes = await this.auth.registerWithCredentials(email, password);
+    console.log(registerRes)
+  }
 }
