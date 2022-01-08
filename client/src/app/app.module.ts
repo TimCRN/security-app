@@ -15,6 +15,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { AngularFireModule } from '@angular/fire/compat';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AngularFireModule } from '@angular/fire/compat';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

@@ -8,20 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  credentials = {
+    email: '',
+    password: '',
+  };
+
   constructor(
-    public auth: AuthService
+    public auth: AuthService,
   ) { }
 
-  ngOnInit(): void {
+
+  ngOnInit(): void {}
+
+  async onLogin() {
+    const { email, password } = this.credentials;
+    const loginRes = await this.auth.signInWithCredentials(email, password);
   }
 
-  onLogin() {
-    // this.auth.verifyEmail();
-    this.auth.signOut();
+  async onRegister() {
+    const { email, password } = this.credentials;
+    await this.auth.registerWithCredentials(email, password);
   }
 
-  async onRegister(email: string, password: string) {
-    const registerRes = await this.auth.registerWithCredentials(email, password);
-    console.log(registerRes)
-  }
 }

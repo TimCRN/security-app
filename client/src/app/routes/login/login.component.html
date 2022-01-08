@@ -3,18 +3,18 @@
   <div id="login-card" class="card">
     <h1>Login</h1>
 
-    <div id="manual-login-container">
-      <input type="email" placeholder="Email" #email required>
-      <input type="password" placeholder="Password" #password required>
+    <form #loginForm="ngForm" (ngSubmit)="onLogin()" id="manual-login-container">
+      <input type="email" placeholder="Email" name="email" [(ngModel)]="credentials.email" required>
+      <input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" required>
       <div class="button-wrapper">
-        <button (click)="onLogin()" id="login-btn" class="button">Log in</button>
-        <button (click)="auth.registerWithCredentials(email.value, password.value)" id="register-btn" class="button inverse">Register</button>
+        <button type="submit" id="login-btn" class="button">Log in</button>
+        <button type="button" (click)="onRegister()" id="register-btn" class="button inverse">Sign up</button>
       </div>
-    </div>
+    </form>
 
     <div id="quick-login-container">
-      <button class="button inverse">Log in with Google</button>
-      <button class="button inverse">Log in with GitHub</button>
+      <button type="button" class="button inverse">Log in with Google</button>
+      <button type="button" class="button inverse">Log in with GitHub</button>
     </div>
 
   </div>
