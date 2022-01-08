@@ -107,6 +107,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "security-app:build:production",
+            "firebaseProject": "dash-628d5",
+            "firebaseHostingSite": "dash-628d5"
+          }
         }
       }
     }
