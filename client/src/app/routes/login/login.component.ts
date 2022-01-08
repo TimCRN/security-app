@@ -34,4 +34,8 @@ export class LoginComponent implements OnInit {
     await this.auth.signInWithGoogle();
   }
 
+  async onLoginWithGitHub() {
+    await this.auth.signInWithGitHub();
+  }
+
 }

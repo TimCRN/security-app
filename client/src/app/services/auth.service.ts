@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import {GoogleAuthProvider} from 'firebase/auth';
+import {GithubAuthProvider, GoogleAuthProvider} from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -66,11 +66,25 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  /** Launch Google OAuth login flow */
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();
+    await this.signInWithProvider(provider);
+  }
+
+  /** Launch GitHub OAuth login flow */
+  async signInWithGitHub() {
+    const provider = new GithubAuthProvider();
+    await this.signInWithProvider(provider);
+  }
+
+  /**
+   * Launch auth flow for specified provider, either Google or GitHub
+   * @param provider
+   */
+  private async signInWithProvider(provider: GoogleAuthProvider | GithubAuthProvider) {
     try {
       const loginRes = this.afAuth.signInWithPopup(provider);
-      console.log(loginRes);
     } catch (error) {
       console.error(error);
     }
