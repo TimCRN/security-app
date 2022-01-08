@@ -1,0 +1,27 @@
+@use '../../layout'
+@use '../../vars'
+
+header
+  height: 70px
+  background: var(--surface3)
+  box-shadow: var(--shadow-3)
+
+  #header-content
+    display: flex
+    justify-content: space-between
+    align-items: center
+    user-select: none
+
+    #header-branding
+      display: flex
+      gap: 1em
+      align-items: center
+      color: var(--brand)
+
+      #header-logo
+        height: 40px
+        fill: var(--brand)
+
+    #header-items
+      display: flex
+      gap: 40px

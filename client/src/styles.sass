@@ -1,1 +1,109 @@
-/* You can add global styles to this file, and also import other style files */
+@import "https://unpkg.com/open-props"
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+  // Alt 343
+  --brand-hue: 220
+  --brand-saturation: 86%
+  --brand-lightness: 54%
+
+  // Light theme
+  --brand-light: hsl(var(--brand-hue) var(--brand-saturation) var(--brand-lightness))
+  --text1-light: hsl(var(--brand-hue) var(--brand-saturation) 10%)
+  --text2-light: hsl(var(--brand-hue) 8% 30%)
+  --surface1-light: hsl(var(--brand-hue) 20% 99%)
+  --surface2-light: hsl(var(--brand-hue) 24% 95%)
+  --surface3-light: hsl(var(--brand-hue) 43% 94%)
+  --surface4-light: hsl(var(--brand-hue) 8% 89%)
+
+  // Dark theme
+  --brand-dark: hsl(var(--brand-hue) calc(var(--brand-saturation) / 2) calc(var(--brand-lightness)))
+  --text1-dark: hsl(var(--brand-hue) 15% 85%)
+  --text2-dark: hsl(var(--brand-hue) 5% 65%)
+  --surface1-dark: hsl(var(--brand-hue) 10% 11%)
+  --surface2-dark: hsl(var(--brand-hue) 10% 17%)
+  --surface3-dark: hsl(var(--brand-hue) 5%  20%)
+  --surface4-dark: hsl(var(--brand-hue) 5% 25%)
+
+:root
+  color-scheme: light
+  --brand: var(--brand-light)
+  --text1: var(--text1-light)
+  --text2: var(--text2-light)
+  --surface1: var(--surface1-light)
+  --surface2: var(--surface2-light)
+  --surface3: var(--surface3-light)
+  --surface4: var(--surface4-light)
+
+  @media (prefers-color-scheme: dark)
+    color-scheme: dark
+    --brand: var(--brand-dark)
+    --text1: var(--text1-dark)
+    --text2: var(--text2-dark)
+    --surface1: var(--surface1-dark)
+    --surface2: var(--surface2-dark)
+    --surface3: var(--surface3-dark)
+    --surface4: var(--surface4-dark)
+
+html, body
+  background: var(--surface2)
+  font-family: var(--font-sans)
+  accent-color: var(--brand)
+  color: var(--text1)
+
+.card
+  background: var(--surface1)
+  padding: 2rem
+  border-radius: 1rem
+  color: var(--text1)
+  box-shadow: var(--shadow-2)
+
+  h1, h2, h3, h4, h5, h6
+    color: var(--text2)
+
+.button
+  padding: .5rem 2rem
+  background: var(--brand)
+  color: #fff
+  border: none
+  border-radius: 500px
+  font-size: 1em
+  align-self: flex-start
+  cursor: pointer
+  user-select: none
+  display: inline-block
+  position: relative
+  transition: transform .15s ease
+  will-change: transform
+
+  // Box shadow is animated on hover using a pseudo element:
+  // Animating opacity (of the pseudo element) is more performant than animating box-shadow
+  &::after
+    content: ''
+    position: absolute
+    z-index: 1
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    border-radius: 500px
+    opacity: 0
+    transition: opacity .15s ease
+    will-change: opacity
+    box-shadow: var(--shadow-3)
+
+  &:hover, &:focus
+    transform: translateY(-2px)
+    &::after
+      opacity: 1
+
+  &:active
+    transform: translateY(0)
+    &::after
+      opacity: 0
+
+  @media (prefers-color-scheme: dark)
+    color: var(--text1)

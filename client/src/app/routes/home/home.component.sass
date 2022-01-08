@@ -1,0 +1,23 @@
+@use '../../_layout'
+
+#main-content
+  display: grid
+  grid-template: "events events events" auto "devices devices settings" 1fr
+  gap: 2rem
+  height: 100%
+
+  @media (max-width: 1000px)
+    grid-template: "events" auto "devices" auto "settings" auto
+
+  #notification-wrapper
+    grid-area: events
+
+  #device-overview-wrapper
+    grid-area: devices
+
+  #quick-settings-wrapper
+    grid-area: settings
+
+.section-heading
+  text-transform: capitalize
+  margin-bottom: 1rem
