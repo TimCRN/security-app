@@ -11,9 +11,9 @@ import { environment } from '../environments/environment';
 import { DeviceItemComponent } from './components/device-item/device-item.component';
 import { EventItemComponent } from './components/event-item/event-item.component';
 import { LoginComponent } from './routes/login/login.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth,getAuth } from '@angular/fire/auth';
-import { providePerformance,getPerformance } from '@angular/fire/performance';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { providePerformance, getPerformance } from '@angular/fire/performance';
 
 @NgModule({
   declarations: [
