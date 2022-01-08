@@ -4,7 +4,7 @@ export const environment = {
     appId: '1:825206742784:web:d6464e70e88201288a1de5',
     storageBucket: 'dash-628d5.appspot.com',
     apiKey: 'AIzaSyBVcBYMzWmOa1uToCO2CfN0I2jGSCTr1N8',
-    authDomain: 'dash-628d5.firebaseapp.com',
+    authDomain: 'securedash.niels.codes',
     messagingSenderId: '825206742784',
   },
   production: true,

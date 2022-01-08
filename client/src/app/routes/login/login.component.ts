@@ -30,4 +30,8 @@ export class LoginComponent implements OnInit {
     await this.auth.registerWithCredentials(email, password);
   }
 
+  async onLoginWithGoogle() {
+    await this.auth.signInWithGoogle();
+  }
+
 }
