@@ -78,6 +78,7 @@ html, body
   position: relative
   transition: transform .15s ease
   will-change: transform
+  border: 2px solid var(--brand)
 
   // Box shadow is animated on hover using a pseudo element:
   // Animating opacity (of the pseudo element) is more performant than animating box-shadow
@@ -107,3 +108,8 @@ html, body
 
   @media (prefers-color-scheme: dark)
     color: var(--text1)
+
+  &.inverse
+    background: none
+    border: 2px solid var(--brand)
+    color: var(--brand)
