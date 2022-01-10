@@ -12,7 +12,7 @@
         <!-- navigation... -->
       </div>
 
-      <div id="header-user" (click)="auth.signOut()">
+      <div id="header-user" *ngIf="auth.isSignedIn | async" (click)="auth.signOut()">
         Log out
       </div>
 

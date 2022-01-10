@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import {GithubAuthProvider, GoogleAuthProvider} from 'firebase/auth';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  isSignedIn = new BehaviorSubject(false);
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -14,8 +17,10 @@ export class AuthService {
   ) {
     afAuth.authState.subscribe((user: unknown) => {
       if (!!user) {
+        this.isSignedIn.next(true);
         this.router.navigate(['/']);
       } else {
+        this.isSignedIn.next(false);
         this.router.navigate(['/login']);
       }
     })
