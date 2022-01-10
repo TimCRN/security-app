@@ -4,7 +4,7 @@
   height: 100%
 
   #login-card
-    width: 500px
+    width: min(500px, 90vw)
 
     #manual-login-container
       margin: 2ch 0
@@ -24,8 +24,9 @@
 
       .button-wrapper
         margin-top: 2ch
-        display: flex
+        display: grid
         gap: 2ch
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
 
     #quick-login-container
       margin-top: 4ch
