@@ -1,0 +1,7 @@
+<button class="quick-signin-btn" *ngIf="type" [ngClass]="type">
+  <div class="icon-wrapper">
+    <img src="../../../assets/{{ type }}-mark.svg" alt="{{ type }} logo icon">
+  </div>
+  <span class="btn-label" *ngIf="type === 'google'">Sign in with Google</span>
+  <span class="btn-label" *ngIf="type === 'github'">Sign in with GitHub</span>
+</button>

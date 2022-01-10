@@ -38,6 +38,9 @@
   --surface3: var(--surface3-light)
   --surface4: var(--surface4-light)
 
+  --shadow-timing: .15s ease
+  --underline-size: .15em
+
   @media (prefers-color-scheme: dark)
     color-scheme: dark
     --brand: var(--brand-dark)
@@ -76,9 +79,13 @@ html, body
   user-select: none
   display: inline-block
   position: relative
-  transition: transform .15s ease
+  transition: transform var(--shadow-timing)
   will-change: transform
   border: 2px solid var(--brand)
+
+  &:focus-visible
+    text-decoration: underline
+    text-decoration-thickness: var(--underline-size)
 
   // Box shadow is animated on hover using a pseudo element:
   // Animating opacity (of the pseudo element) is more performant than animating box-shadow
@@ -92,6 +99,7 @@ html, body
     left: 0
     border-radius: 500px
     opacity: 0
+    pointer-events: none
     transition: opacity .15s ease
     will-change: opacity
     box-shadow: var(--shadow-3)

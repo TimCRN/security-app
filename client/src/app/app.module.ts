@@ -16,6 +16,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule } from '@angular/forms';
+import { QuickSigninComponent } from './components/quick-signin/quick-signin.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     DeviceItemComponent,
     EventItemComponent,
-    LoginComponent
+    LoginComponent,
+    QuickSigninComponent
   ],
   imports: [
     BrowserModule,
