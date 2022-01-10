@@ -4,8 +4,8 @@
     <h1>Login</h1>
 
     <form #loginForm="ngForm" (ngSubmit)="onLogin()" id="manual-login-container">
-      <input type="email" placeholder="Email" name="email" [(ngModel)]="credentials.email" required>
-      <input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" required>
+      <input type="email" placeholder="Email" name="email" [(ngModel)]="credentials.email" class="input" required>
+      <input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" class="input" required>
       <div class="button-wrapper">
         <button type="submit" id="login-btn" class="button">Log in</button>
         <button (click)="onRegister()" type="button" id="register-btn" class="button inverse">Sign up</button>

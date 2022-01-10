@@ -8,7 +8,6 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login'])
 const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
 const routes: Routes = [
   { path: '', component: HomeComponent,...canActivate(redirectUnauthorizedToLogin) },
-  // TODO: Redirect to home when already logged in
   { path: 'login', component: LoginComponent, ...canActivate(redirectLoggedInToHome) }
 ];
 

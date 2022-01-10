@@ -124,3 +124,17 @@ html, body
     background: none
     border: 2px solid var(--brand)
     color: var(--brand)
+
+.input
+  background: var(--surface2)
+  border: none
+  padding: 1ch 2ch
+  font-size: 1.2em
+  // Excessive border radius results in perfect pill shape
+  border-radius: 500px
+  outline: none
+  color: var(--text1)
+
+
+  &:focus-visible
+    outline: 2px solid var(--brand)
