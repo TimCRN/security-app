@@ -1,4 +1,4 @@
-<button class="quick-signin-btn" *ngIf="type" [ngClass]="type">
+<button class="quick-signin-btn" *ngIf="type" [ngClass]="type" (click)="onSignIn()">
   <div class="icon-wrapper">
     <img src="../../../assets/{{ type }}-mark.svg" alt="{{ type }} logo icon">
   </div>

@@ -82,7 +82,10 @@ html, body
   transition: transform var(--shadow-timing)
   will-change: transform
   border: 2px solid var(--brand)
+  outline: none
 
+  // Add text decoration when button is focused and UA deems indicator necessary
+  // This improves a11y, as outline is otherwise removed on .button elements
   &:focus-visible
     text-decoration: underline
     text-decoration-thickness: var(--underline-size)

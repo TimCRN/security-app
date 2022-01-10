@@ -17,4 +17,12 @@ export class QuickSigninComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onSignIn() {
+    if (this.type === 'google') {
+      this.auth.signInWithGoogle();
+    } else if (this.type === 'github') {
+      this.auth.signInWithGitHub();
+    }
+  }
+
 }
