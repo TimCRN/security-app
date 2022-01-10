@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  credentials = {
+    email: '',
+    password: '',
+  };
 
-  ngOnInit(): void {
+  constructor(
+    public auth: AuthService,
+  ) { }
+
+
+  ngOnInit(): void {}
+
+  async onLogin() {
+    const { email, password } = this.credentials;
+    const loginRes = await this.auth.signInWithCredentials(email, password);
+  }
+
+  async onRegister() {
+    const { email, password } = this.credentials;
+    await this.auth.registerWithCredentials(email, password);
+  }
+
+  async onLoginWithGoogle() {
+    await this.auth.signInWithGoogle();
+  }
+
+  async onLoginWithGitHub() {
+    await this.auth.signInWithGitHub();
   }
 
 }

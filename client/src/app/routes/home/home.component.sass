@@ -1,13 +1,12 @@
-@use '../../_layout'
-
 #main-content
   display: grid
   grid-template: "events events events" auto "devices devices settings" 1fr
-  gap: 2rem
+  gap: 4ch
   height: 100%
 
   @media (max-width: 1000px)
     grid-template: "events" auto "devices" auto "settings" auto
+    gap: 2ch
 
   #notification-wrapper
     grid-area: events

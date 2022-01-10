@@ -38,6 +38,9 @@
   --surface3: var(--surface3-light)
   --surface4: var(--surface4-light)
 
+  --shadow-timing: .15s ease
+  --underline-size: .15em
+
   @media (prefers-color-scheme: dark)
     color-scheme: dark
     --brand: var(--brand-dark)
@@ -57,7 +60,7 @@ html, body
 .card
   background: var(--surface1)
   padding: 2rem
-  border-radius: 1rem
+  border-radius: .5rem
   color: var(--text1)
   box-shadow: var(--shadow-2)
 
@@ -65,7 +68,7 @@ html, body
     color: var(--text2)
 
 .button
-  padding: .5rem 2rem
+  padding: 1ch 4ch
   background: var(--brand)
   color: #fff
   border: none
@@ -76,8 +79,16 @@ html, body
   user-select: none
   display: inline-block
   position: relative
-  transition: transform .15s ease
+  transition: transform var(--shadow-timing)
   will-change: transform
+  border: 2px solid var(--brand)
+  outline: none
+
+  // Add text decoration when button is focused and UA deems indicator necessary
+  // This improves a11y, as outline is otherwise removed on .button elements
+  &:focus-visible
+    text-decoration: underline
+    text-decoration-thickness: var(--underline-size)
 
   // Box shadow is animated on hover using a pseudo element:
   // Animating opacity (of the pseudo element) is more performant than animating box-shadow
@@ -91,6 +102,7 @@ html, body
     left: 0
     border-radius: 500px
     opacity: 0
+    pointer-events: none
     transition: opacity .15s ease
     will-change: opacity
     box-shadow: var(--shadow-3)
@@ -107,3 +119,28 @@ html, body
 
   @media (prefers-color-scheme: dark)
     color: var(--text1)
+
+  &.inverse
+    background: none
+    border: 2px solid var(--brand)
+    color: var(--brand)
+
+.input
+  background: var(--surface2)
+  border: none
+  padding: 1ch 2ch
+  font-size: 1.2em
+  // Excessive border radius results in perfect pill shape
+  border-radius: 500px
+  outline: none
+  color: var(--text1)
+
+
+  &:focus-visible
+    outline: 2px solid var(--brand)
+
+
+.clamped
+  width: min(90vw, 1600px)
+  margin: 0 auto
+  height: 100%
