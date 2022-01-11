@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventItemComponent implements OnInit {
 
+  type!: string;
+
   constructor() { }
 
   ngOnInit(): void {
+    const types = ['info', 'warning', 'alert'];
+    const idx = Math.floor(Math.random() * 3);
+    this.type = types[idx];
   }
 
 }
