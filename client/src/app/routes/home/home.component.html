@@ -4,10 +4,10 @@
     <h1 class="section-heading">Event overview</h1>
     <!-- <p>No important events.</p> -->
     <div id="event-list">
-      <app-event-item></app-event-item>
-      <app-event-item></app-event-item>
-      <app-event-item></app-event-item>
-      <app-event-item></app-event-item>
+      <app-event-item *ngFor="let event of events" [event]="event"></app-event-item>
+      <!-- <app-event-item></app-event-item> -->
+      <!-- <app-event-item></app-event-item> -->
+      <!-- <app-event-item></app-event-item> -->
     </div>
   </div>
 

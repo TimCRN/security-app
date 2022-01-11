@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NotificationEvent } from './../../interfaces/notification-event';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-event-item',
@@ -7,14 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventItemComponent implements OnInit {
 
-  type!: string;
+  @Input() event!: NotificationEvent;
 
   constructor() { }
 
-  ngOnInit(): void {
-    const types = ['info', 'warning', 'alert'];
-    const idx = Math.floor(Math.random() * 3);
-    this.type = types[idx];
-  }
+  ngOnInit(): void { }
 
 }
