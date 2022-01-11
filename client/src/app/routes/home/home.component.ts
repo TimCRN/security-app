@@ -36,16 +36,22 @@ export class HomeComponent implements OnInit {
     },
     {
       type: 'info',
-      description: 'Enable notificions',
+      description: 'Enable notifications',
       devices: 'All devices',
     },
-  ]
+  ];
+  time!: string;
 
   constructor(
     private notifications: NotificationsService
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const d = new Date();
+    const hours = `0${d.getHours()}`.slice(-2);
+    const minutes = `0${d.getMinutes()}`.slice(-2);
+    this.time = `${hours}:${minutes}`
+  }
 
   onSubscribeToNotifications() {
     this.notifications.subscribeToNotifications();

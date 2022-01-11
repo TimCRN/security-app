@@ -11,6 +11,11 @@
   #notification-wrapper
     grid-area: events
 
+    #notification-heading-wrapper
+      span
+        color: var(--text2)
+        font-size: .9em
+
     #event-list
       display: flex
       flex-direction: column
@@ -22,6 +27,7 @@
 
         &:last-child
           border: none
+          padding-bottom: 0
 
   #device-overview-wrapper
     grid-area: devices
@@ -30,5 +36,4 @@
     grid-area: settings
 
 .section-heading
-  text-transform: capitalize
   margin-bottom: 1rem
