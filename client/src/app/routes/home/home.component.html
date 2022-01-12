@@ -7,7 +7,7 @@
       <span>Last updated: {{ time }}</span>
     </div>
 
-    <!-- <p>No important events.</p> -->
+    <p *ngIf="events.length === 0">You're all caught up!</p>
     <div id="event-list">
       <app-event-item *ngFor="let event of events" [event]="event"></app-event-item>
     </div>
