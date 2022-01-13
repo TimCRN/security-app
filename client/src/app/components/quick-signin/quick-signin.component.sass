@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
+
+.quick-signin-btn
+  --radius: 3px
+  position: relative
+  display: inline-block
+  font-family: 'Roboto'
+  color: #fff
+  border: none
+  padding: 1px
+  display: flex
+  gap: 16px
+  align-items: center
+  border-radius: var(--radius)
+  transition: color .2s ease, transform var(--shadow-timing)
+  will-change: color
+  will-change: transform
+  cursor: pointer
+  outline: none
+  -webkit-tap-highlight-color: transparent
+
+  @media (prefers-color-scheme: dark)
+    filter: saturate(.8)
+
+  // See style.sass
+  &:focus-visible
+    text-decoration: underline
+    text-decoration-thickness: var(--underline-size)
+
+  .icon-wrapper
+    padding: 8px
+    display: grid
+    place-content: center
+    border-radius: var(--radius)
+
+    img
+      height: 25px
+
+  .btn-label
+    padding-right: 8px
+    font-weight: bold
+
+  &.google
+    background: #4285F4
+
+    .icon-wrapper
+      background: #fff
+
+    &:active
+      background: #3367d6
+
+  &.github
+    background: #000
+
+    &:active
+      background: #111111
+
+  // See style.sass
+  &::after
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    box-shadow: var(--shadow-3)
+    opacity: 0
+    transition: opacity var(--shadow-timing)
+    will-change: opacity
+    pointer-events: none
+
+  &:hover, &:focus
+    transform: translateY(-2px)
+
+    &::after
+      opacity: 1
+
+  &:active
+    transform: translateY(0)
+
+    &::after
+      opacity: 0

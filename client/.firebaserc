@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "dash-628d5": {
+      "hosting": {
+        "security-app": [
+          "dash-628d5"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "dash-628d5"
+  }
+}
