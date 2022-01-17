@@ -23,6 +23,23 @@
 
     .device-name
 
-    .device-status
-      font-size: .9em
-      color: var(--text2)
+    .device-status-wrapper
+
+      .device-status
+        font-size: .9em
+        color: var(--text2)
+        position: relative
+        display: inline-block
+
+        // Colored status indicator
+        &::after
+          content: ''
+          position: absolute
+          bottom: .5ex
+          right: -1em
+          height: 1ch
+          width: 1ch
+          border-radius: 100%
+
+        &.good::after
+          background: var(--color-okay)
