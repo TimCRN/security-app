@@ -1,0 +1,69 @@
+// TODO: Refactor media queries
+.event-item-wrapper
+  display: grid
+  grid-template: "icon info actions" 1fr / fit-content(50px) 1fr fit-content(10ch)
+  flex-wrap: wrap
+  gap: 2ch
+  align-items: center
+
+  @media (max-width: 800px)
+    grid-template: "icon info" fit-content(4ch) "icon actions" fit-content(4ch) / fit-content(50px) 1fr
+
+  .event-icon-wrapper
+    grid-area: icon
+    background: var(--brand)
+    // padding: 10px
+    height: 50px
+    width: 50px
+    display: grid
+    place-content: center
+    border-radius: 5px
+
+    @media (max-width: 800px)
+      height: 100%
+      aspect-ratio: 1/1
+
+      &.alert
+        animation-name: none !important
+
+        svg
+          animation: var(--animation-bounce)
+
+    &.alert
+      background: var(--alert)
+      animation: var(--animation-bounce)
+
+    &.warning
+      background: var(--warning)
+
+    &.info
+      background: var(--brand)
+
+    svg
+      height: 32px
+      width: 32px
+      fill: var(--surface2)
+
+  .event-info-wrapper
+    grid-area: info
+    flex: 1
+    display: flex
+    flex-direction: column
+    gap: 0.25em
+
+    .event-meta-wrapper
+      display: flex
+      gap: .5em
+      font-size: .9em
+      color: var(--text2)
+
+      @media (max-width: 500px)
+        flex-direction: column
+
+        .meta-divider
+          display: none
+
+  .event-action-wrapper
+    grid-area: actions
+    display: flex
+    gap: 2ch
