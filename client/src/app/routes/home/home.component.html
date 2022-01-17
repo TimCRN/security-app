@@ -1,18 +1,20 @@
 <div id="main-content" class="clamped">
 
   <div id="notification-wrapper" class="card">
-    <h1 class="section-heading">Event overview</h1>
-    <p>No important events.</p>
+
+    <div id="notification-heading-wrapper"  class="section-heading">
+      <h1>Event Overview</h1>
+      <span>Last updated: {{ time }}</span>
+    </div>
+
+    <p *ngIf="events.length === 0">You're all caught up!</p>
     <div id="event-list">
-      <!-- <app-event-item></app-event-item>
-      <app-event-item></app-event-item>
-      <app-event-item></app-event-item>
-      <app-event-item></app-event-item> -->
+      <app-event-item *ngFor="let event of events" [event]="event"></app-event-item>
     </div>
   </div>
 
   <div id="device-overview-wrapper" class="card">
-    <h2 class="section-heading">Device overview</h2>
+    <h2 class="section-heading">Device Overview</h2>
     <div id="device-list">
       <app-device-item></app-device-item>
       <app-device-item></app-device-item>
@@ -22,7 +24,7 @@
   </div>
 
   <div id="quick-settings-wrapper" class="card">
-    <h2 class="section-heading">Quick settings</h2>
+    <h2 class="section-heading">Quick Settings</h2>
   </div>
 
 </div>

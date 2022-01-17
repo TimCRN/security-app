@@ -18,6 +18,8 @@
   --surface2-light: hsl(var(--brand-hue) 24% 95%)
   --surface3-light: hsl(var(--brand-hue) 43% 94%)
   --surface4-light: hsl(var(--brand-hue) 8% 89%)
+  --alert-light: hsl(0, 95%, 54%)
+  --warning-light: hsl(34, 95%, 54%)
 
   // Dark theme
   --brand-dark: hsl(var(--brand-hue) calc(var(--brand-saturation) / 2) calc(var(--brand-lightness)))
@@ -27,8 +29,13 @@
   --surface2-dark: hsl(var(--brand-hue) 10% 17%)
   --surface3-dark: hsl(var(--brand-hue) 5%  20%)
   --surface4-dark: hsl(var(--brand-hue) 5% 25%)
+  --alert-dark: hsl(0, 90%, 54%)
+  --warning-dark: hsl(34, 85%, 54%)
 
 :root
+  --shadow-timing: .15s ease
+  --underline-size: .15em
+
   color-scheme: light
   --brand: var(--brand-light)
   --text1: var(--text1-light)
@@ -37,9 +44,8 @@
   --surface2: var(--surface2-light)
   --surface3: var(--surface3-light)
   --surface4: var(--surface4-light)
-
-  --shadow-timing: .15s ease
-  --underline-size: .15em
+  --alert: var(--alert-light)
+  --warning: var(--warning-light)
 
   @media (prefers-color-scheme: dark)
     color-scheme: dark
@@ -50,6 +56,8 @@
     --surface2: var(--surface2-dark)
     --surface3: var(--surface3-dark)
     --surface4: var(--surface4-dark)
+    --alert: var(--alert-dark)
+    --warning: var(--warning-dark)
 
 html, body
   background: var(--surface2)
@@ -124,6 +132,9 @@ html, body
     background: none
     border: 2px solid var(--brand)
     color: var(--brand)
+
+  &.small
+    padding: .5ch 2ch
 
 .input
   background: var(--surface2)
