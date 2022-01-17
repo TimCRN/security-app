@@ -1,4 +1,3 @@
-import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
 
@@ -9,49 +8,11 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 })
 export class HomeComponent implements OnInit {
 
-  events: NotificationEvent[] = [
-    {
-      type: 'alert',
-      description: 'Your house is on fire',
-      devices: 'All devices',
-      timestamp: '16:25'
-    },
-    {
-      type: 'alert',
-      description: 'Your house is on fire',
-      devices: 'All devices',
-      timestamp: '16:20'
-    },
-    {
-      type: 'warning',
-      description: 'Battery level low',
-      devices: 'Hallway smoke detector',
-      timestamp: '12:10'
-    },
-    {
-      type: 'warning',
-      description: 'Battery level low',
-      devices: 'Kitchen smoke detector',
-      timestamp: 'Yesterday, 22:40'
-    },
-    {
-      type: 'info',
-      description: 'Enable notifications',
-      devices: 'All devices',
-    },
-  ];
-  time!: string;
-
   constructor(
     private notifications: NotificationsService
   ) { }
 
-  ngOnInit(): void {
-    const d = new Date();
-    const hours = `0${d.getHours()}`.slice(-2);
-    const minutes = `0${d.getMinutes()}`.slice(-2);
-    this.time = `${hours}:${minutes}`
-  }
+  ngOnInit(): void {}
 
   onSubscribeToNotifications() {
     this.notifications.subscribeToNotifications();
