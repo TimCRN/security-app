@@ -41,5 +41,11 @@
           width: 1ch
           border-radius: 100%
 
-        &.good::after
+        &.status-okay::after
           background: var(--color-okay)
+        &.status-warning::after
+          background: var(--color-warning)
+        &.status-alert::after
+          background: var(--color-alert)
+        &.status-info::after
+          background: var(--brand)
