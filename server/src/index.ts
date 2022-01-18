@@ -2,6 +2,7 @@ import {connectDB} from './services/db.service';
 import express, {Request, Response} from 'express';
 import {devicesRouter} from './routes/devices.route';
 import cors from 'cors';
+import {notificationsRouter} from './routes/notifications.route';
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -22,5 +23,6 @@ app.get('/', async (req: Request, res: Response) => {
 });
 
 app.use('/devices', devicesRouter);
+app.use('/notifications', notificationsRouter);
 
 app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));

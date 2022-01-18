@@ -1,6 +1,24 @@
 import mongoose from 'mongoose';
 
-const notificationSchema = new mongoose.Schema(
+export interface INotification {
+  userId: string;
+  priority: number;
+  type: string;
+  devices: string[];
+  actions: {
+    sentNotification: boolean;
+    circleOfTrust?: [CircleOfTrustItem[]];
+  };
+  resolved: boolean;
+}
+
+interface CircleOfTrustItem {
+  name: string;
+  number: string;
+  contacted: boolean;
+}
+
+const notificationSchema = new mongoose.Schema<INotification>(
   {
     userId: {type: String, required: true},
     priority: {type: Number, required: true},
@@ -19,7 +37,6 @@ const notificationSchema = new mongoose.Schema(
       ],
     },
     resolved: {type: Boolean, required: true, default: false},
-    timestamp: {type: Date, default: Date.now},
   },
   {
     collection: 'notifications',
@@ -27,4 +44,7 @@ const notificationSchema = new mongoose.Schema(
   }
 );
 
-export const Notification = mongoose.model('Notification', notificationSchema);
+export const Notifications = mongoose.model<INotification>(
+  'Notification',
+  notificationSchema
+);
