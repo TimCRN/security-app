@@ -1,9 +1,6 @@
 import {Request, Response} from 'express';
-import {Notifications, INotification} from '../models/notifications.model';
-import {
-  createNotification,
-  groupNotificationsByType,
-} from '../services/notification.service';
+import {Notifications} from '../models/notifications.model';
+import {groupNotificationsByType} from '../services/notification.service';
 
 export class NotificationController {
   /** Retrieve all non-resolved notifications for a user */
