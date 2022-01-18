@@ -21,6 +21,23 @@ export class NotificationController {
     const grouped = groupNotificationsByType(notifications);
     return res.json(grouped);
   }
+
+  /** Resolve a notification by its ID */
+  async resolveNotification(req: Request, res: Response) {
+    const {notificationId} = req.params;
+    try {
+      const doc = await Notifications.findOne({_id: notificationId});
+      if (!doc) throw Error('No document found with ID');
+      doc.resolved = true;
+      await doc?.save();
+      res.status(204).send();
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: `No notification found with ID ${notificationId}`,
+      });
+    }
+  }
 }
 
 /**
