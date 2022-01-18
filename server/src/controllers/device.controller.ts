@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { Device, DeviceInput } from '../models/devices.model';
 import { devicesRouter } from '../routes/devices.route';
+import { TuyaConnection } from '../services/tuya.service';
+
+const tuyaAPI = new TuyaConnection();
 
 export class DeviceController 
 {
@@ -62,5 +65,11 @@ export class DeviceController
         }
         await Device.findByIdAndDelete(id);
         return res.status(201).json(`Device '${id}' has been succesfully deleted!`);
+    }
+
+    async tuyaInfo(req: Request, res: Response)
+    {
+        const data = await tuyaAPI.getDevices();
+        return res.status(201).json(data);
     }
 }
