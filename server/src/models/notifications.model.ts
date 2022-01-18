@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export interface INotification {
   userId: string;
   type: 'critical' | 'warning' | 'info';
-  devices: string[];
+  devices?: string[];
   actions: {
     sentNotification: boolean;
     circleOfTrust?: [CircleOfTrustItem[]];
