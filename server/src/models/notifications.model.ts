@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 export interface INotification {
   userId: string;
-  priority: number;
-  type: string;
+  type: 'critical' | 'warning' | 'info';
   devices: string[];
   actions: {
     sentNotification: boolean;
@@ -21,7 +20,6 @@ interface CircleOfTrustItem {
 const notificationSchema = new mongoose.Schema<INotification>(
   {
     userId: {type: String, required: true},
-    priority: {type: Number, required: true},
     type: {type: String, required: true},
     devices: [String],
     actions: {
