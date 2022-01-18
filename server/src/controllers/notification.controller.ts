@@ -18,20 +18,28 @@ export class NotificationController {
       userId,
     }).exec();
 
-    return res.json(notifications);
-  }
-
-  async createNotification(req: Request, res: Response) {
-    await Notifications.create({
-      userId: 'foo',
-      priority: 2,
-      type: 'warning',
-      devices: ['abc123', 'xyz789'],
-      actions: {
-        sentNotification: false,
-      },
-      resolved: false,
-    });
-    res.status(201).send();
+    const grouped = groupNotificationsByType(notifications);
+    return res.json(grouped);
   }
 }
+
+/**
+ * Group notifications by type
+ * @param notifications raw array of notifications
+ * @returns object with grouped notifications
+ */
+const groupNotificationsByType = (notifications: INotification[]) => {
+  // Custom reducer function to implement with array.reduce
+  // Groups array by all different types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const group = (acc: any, cur: any) => {
+    acc[cur.type] = acc[cur.type] || []; // Create new empty array if no type is defined
+    acc[cur.type].push(cur);
+    return acc;
+  };
+
+  // Implement array.reduce method
+  // Initialize with a null object, else first notification is skipped
+  const groupedNotifications = notifications.reduce(group, Object.create(null));
+  return groupedNotifications;
+};
