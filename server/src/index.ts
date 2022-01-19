@@ -21,62 +21,7 @@ app.use(cors());
   await connectDB();
 })();
 
-const events: INotification[] = [
-  {
-    userId: '9d0iLS8iuiUYsEPY3FIDPH8czKh2',
-    type: 'critical',
-    title: 'Fire detected',
-    devices: [],
-    sentNotification: false,
-    resolved: false,
-  },
-  {
-    userId: '9d0iLS8iuiUYsEPY3FIDPH8czKh2',
-    type: 'info',
-    title: 'Replace your battery soon',
-    devices: [],
-    sentNotification: false,
-    resolved: false,
-  },
-  {
-    userId: '9d0iLS8iuiUYsEPY3FIDPH8czKh2',
-    type: 'critical',
-    title: 'Flood detected',
-    devices: [],
-    sentNotification: false,
-    resolved: false,
-  },
-  {
-    userId: '9d0iLS8iuiUYsEPY3FIDPH8czKh2',
-    type: 'warning',
-    title: 'Battery level low',
-    devices: [],
-    sentNotification: false,
-    resolved: false,
-  },
-  {
-    userId: '9d0iLS8iuiUYsEPY3FIDPH8czKh2',
-    type: 'warning',
-    title: 'Battery level low',
-    devices: [],
-    sentNotification: false,
-    resolved: false,
-  },
-  {
-    userId: '9d0iLS8iuiUYsEPY3FIDPH8czKh2',
-    type: 'critical',
-    title: 'Fire detected',
-    devices: [],
-    sentNotification: false,
-    resolved: false,
-  },
-];
-
 app.get('/', async (req: Request, res: Response) => {
-  for (const event of events) {
-    createNotification(event);
-  }
-
   res.send('OK');
 });
 
