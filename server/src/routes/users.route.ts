@@ -6,6 +6,7 @@ const router = Router();
 
 router.post('/', controller.createUser);
 router.get('/:userId', controller.getUser);
-router.patch('/:userId/update', controller.updateUser);
+router.patch('/:userId', controller.updateUser);
+router.post('/:userId/registerPush', controller.addPushSubscription);
 
 export {router as usersRouter};

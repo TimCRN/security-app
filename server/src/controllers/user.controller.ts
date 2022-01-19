@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {Users} from '../models/user.model';
+import {IPushSubcriptionItem, Users} from '../models/user.model';
 
 export class UserController {
   /** Create a new user with given userId and email */
@@ -32,6 +32,7 @@ export class UserController {
     });
   }
 
+  /** Update a user */
   async updateUser(req: Request, res: Response) {
     const {userId} = req.params;
     const patch = req.body;
@@ -45,5 +46,18 @@ export class UserController {
       success: true,
       user,
     });
+  }
+
+  /** Register a push subscription for a user */
+  async addPushSubscription(req: Request, res: Response) {
+    const {userId} = req.params;
+    const subscription: IPushSubcriptionItem = req.body;
+    // TODO: Implement error response
+
+    // TODO: wrap in trycatch
+    const user = await Users.findOne({_id: userId});
+    user?.pushSubscriptions.push(subscription);
+    await user?.save();
+    res.json({success: true});
   }
 }

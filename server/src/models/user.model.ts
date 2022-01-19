@@ -22,7 +22,7 @@ export interface ICircleOfTrustItem {
   number: string;
 }
 
-interface IPushSubcriptionItem {
+export interface IPushSubcriptionItem {
   name: string;
   sub: IPushSubscription;
 }
