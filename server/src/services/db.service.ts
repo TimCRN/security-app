@@ -12,9 +12,11 @@ const dbname = process.env.DB_DBNAME;
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://${user}:${password}@${hostname}/${dbname}`);
+    await mongoose.connect(
+      `mongodb+srv://${user}:${password}@${hostname}/${dbname}`
+    );
     console.log('DB connection success!');
-  } catch(error) {
+  } catch (error) {
     console.error(error);
   }
 };
