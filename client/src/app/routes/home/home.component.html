@@ -7,9 +7,11 @@
       <span>Last updated: {{ time }}</span>
     </div>
 
-    <p *ngIf="events.length === 0">You're all caught up!</p>
+    <p *ngIf="!events || (events.critical.length === 0 && events.warning.length === 0 && events.info.length === 0)">You're all caught up!</p>
     <div id="event-list">
-      <app-event-item *ngFor="let event of events" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of events?.critical" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of events?.warning" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of events?.info" [event]="event"></app-event-item>
     </div>
   </div>
 

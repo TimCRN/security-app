@@ -1,6 +1,7 @@
 import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import {INotification} from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-event-item',
@@ -9,7 +10,7 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 })
 export class EventItemComponent implements OnInit {
 
-  @Input() event!: NotificationEvent;
+  @Input() event!: INotification;
 
   constructor(
     private notifications: NotificationsService

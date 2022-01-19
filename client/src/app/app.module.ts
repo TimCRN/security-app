@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +43,8 @@ import { QuickSigninComponent } from './components/quick-signin/quick-signin.com
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    providePerformance(() => getPerformance())
+    providePerformance(() => getPerformance()),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
