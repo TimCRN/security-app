@@ -1,10 +1,10 @@
 import * as mongoose from "mongoose";
-import { StringLiteralLike } from "typescript";
+import { INotification } from "./notifications.model";
 
 export type DeviceDocument = mongoose.Document & {
     _id: string;
     name: string;
-    model: string;
+    model?: string;
     category: string;
     online: boolean;
     status: deviceStatus[];
@@ -24,6 +24,26 @@ export type deviceStatus = {
     value: string
 }
 
+type simpleNotificationData = {
+    type: 'critical' | 'warning' | 'info',
+    title: string,
+    description?: string
+}
+
+export const deviceNotificationLib : Record<string, Record<string, Record<string, simpleNotificationData>>> = {
+    'Gas Detector': 
+    { 
+        '0' : // Gas Sensor State
+        {
+            '1': // Gas Detected
+            { 
+                type: 'critical',
+                title: 'Gas detected',
+            }
+        }
+    }
+}
+
 const deviceSchema = new mongoose.Schema(
     {
         _id: {
@@ -41,7 +61,8 @@ const deviceSchema = new mongoose.Schema(
             type: String
         },
         online: {
-            type: Boolean
+            type: Boolean,
+            required: true
         },
         status: {
             type: mongoose.Schema.Types.Mixed
