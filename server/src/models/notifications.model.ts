@@ -6,14 +6,12 @@ export interface INotification {
   title: string;
   description?: string;
   devices?: string[];
-  actions: {
-    sentNotification: boolean;
-    circleOfTrust?: [CircleOfTrustItem[]];
-  };
+  sentNotification: boolean;
+  circleOfTrust?: [ICircleOfTrustItem[]];
   resolved: boolean;
 }
 
-interface CircleOfTrustItem {
+interface ICircleOfTrustItem {
   name: string;
   number: string;
   contacted: boolean;
@@ -26,18 +24,16 @@ const notificationSchema = new mongoose.Schema<INotification>(
     title: {type: String, required: true},
     description: String,
     devices: [String],
-    actions: {
-      sentNotification: Boolean,
-      circleOfTrust: [
-        [
-          {
-            name: String,
-            number: String,
-            contacted: {type: Boolean, default: false},
-          },
-        ],
+    sentNotification: Boolean,
+    circleOfTrust: [
+      [
+        {
+          name: String,
+          number: String,
+          contacted: {type: Boolean, default: false},
+        },
       ],
-    },
+    ],
     resolved: {type: Boolean, required: true, default: false},
   },
   {

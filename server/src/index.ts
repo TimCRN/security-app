@@ -25,9 +25,7 @@ app.get('/', async (req: Request, res: Response) => {
     type: 'critical',
     title: 'Hello World',
     description: 'This is a descriptions',
-    actions: {
-      sentNotification: false,
-    },
+    sentNotification: false,
     resolved: false,
   });
   res.send('OK');

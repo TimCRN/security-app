@@ -33,10 +33,16 @@ export const groupNotificationsByType = (notifications: INotification[]) => {
   return groupedNotifications;
 };
 
+/**
+ * Create and dispatch a notification event
+ * - Notification is created and stored in Mongo
+ * - Push notifications are dispatched to the user if push subscriptions are present
+ * @param notification The notification object to create
+ */
 export const createNotification = async (notification: INotification) => {
   const doc = await Notifications.create(notification);
-  sendPushNotification();
-  doc.actions.sentNotification = true;
+  await notifyUser(notification);
+  doc.sentNotification = true;
   await doc.save();
   // TODO: remove console log
   // Implement further push logic
@@ -44,9 +50,12 @@ export const createNotification = async (notification: INotification) => {
 };
 
 // TODO: Implement
-const notifyUser = (userId: string, message: unknown) => {
-  // Get all user's subscriptions
-  // Call sendPushNotification for each subscription
+const notifyUser = async (notification: INotification) => {
+  // 1. Get all user's subscriptions
+  // ? Optional: Implement preferred notification levels
+  // ? User might only want push notifications for critical level notifications
+  // 2. Call sendPushNotification for each subscription
+  // ? What to do if no push subscriptions were ever registered by the user?
 };
 
 /** Send a push notification */
