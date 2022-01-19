@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import * as crypto from 'crypto';
 import { default as axios } from 'axios';
-import { resolve } from 'path';
+import { Device, DeviceInput, deviceStatus } from '../models/devices.model';
 import { syncBuiltinESMExports } from 'module';
 
 // Load environment variables in non-production environment
@@ -29,7 +29,7 @@ const config = {
 
 async function main() {
     await getToken();
-    console.log('Tuya token acquired');
+    console.log('🔑 Tuya token acquired');
 }
 
 /**
@@ -115,17 +115,62 @@ function sleep()
 export const beginTuyaPoll = async() => {
     while(true)
     {
-        if(token != '')
-        {
-            tuyaAPI.getDevices();
-        }
+        const data = await tuyaAPI.getDevices();
+        data.result.list.forEach(async (e: any) => {
+            const d = await Device.findById(String(e.id))
+            if(!d)
+            {
+                await addDeviceToDB(e)
+            }
+            else
+            {
+                await processChanges(d)
+            }
+        })
         await sleep();
+    }
+}
+
+async function addDeviceToDB(device: { id: string; name: any; model: any; category_name: any; online: any; })
+{
+    console.log(`Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`)
+    const input : DeviceInput = {
+        _id : device.id,
+        name : device.name,
+        model : device.model,
+        category : device.category_name,
+        online : device.online,
+        status : (await tuyaAPI.getDeviceStatus(device.id)).result
+    }
+    Device.create(input);
+    console.log(`Device '${device.name}' has been added!`)
+}
+
+async function processChanges(device : DeviceInput)
+{
+    const status = await tuyaAPI.getDeviceStatus(device._id)
+    let changes : boolean = false;
+
+    for (let index = 0; index < status.result.length; index++) {
+        const element = status.result[index].value;
+        if(device.status[index].value != element)
+        {
+            console.log('\x1b[33m%s\x1b[0m','Change detected!')
+            changes = true;
+        }
+    }
+
+    if(changes)
+    {
+        console.log("Changing status")
+        await Device.findOneAndUpdate({'_id':device._id}, {$set: {status: status.result} }, {upsert:false})
     }
 }
 
 class TuyaAPI {
 
-    public async getDevices() {
+    public async getDevices() 
+    {
         const query = {};
         const method = 'GET';
         const url = '/v1.2/iot-03/devices';
@@ -148,6 +193,28 @@ class TuyaAPI {
         }
     }
 
+    public async getDeviceStatus(id : string)
+    {
+        const query = {};
+        const method = 'GET';
+        const url = `/v1.0/iot-03/devices/${id}/status`;
+        const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
+    
+        const { data } = await httpClient.request({
+            method,
+            data: {},
+            params: {},
+            headers: reqHeaders,
+            url: reqHeaders.path,
+        });
+
+        if (!data || !data.success) {
+            throw Error(`Request highway Failed: ${data.msg}`);
+        }
+        else {
+            return data
+        }
+    }
 }
 
 export const tuyaAPI = new TuyaAPI();
