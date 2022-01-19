@@ -1,5 +1,5 @@
 import {connectDB} from './services/db.service';
-import {connectTuya} from './services/tuya.service';
+import {connectTuya, beginTuyaPoll} from './services/tuya.service';
 import express, {Request, Response} from 'express';
 import {devicesRouter} from './routes/devices.route';
 import cors from 'cors';
@@ -11,10 +11,8 @@ app.use(cors());
 
 (async () => {
   await connectDB();
-})();
-
-(async () => {
   await connectTuya();
+  await beginTuyaPoll();
 })();
 
 // Load environment variables in non-production environment
