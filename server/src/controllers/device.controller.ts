@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import { Device, DeviceInput } from '../models/devices.model';
 import { devicesRouter } from '../routes/devices.route';
-import { TuyaConnection } from '../services/tuya.service';
-
-const tuyaAPI = new TuyaConnection();
+import { tuyaAPI } from '../services/tuya.service';
 
 export class DeviceController 
 {
