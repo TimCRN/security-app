@@ -1,11 +1,9 @@
-import {createNotification} from './services/notification.service';
 import {connectDB} from './services/db.service';
 import express, {Request, Response} from 'express';
 import {devicesRouter} from './routes/devices.route';
 import cors from 'cors';
 import {notificationsRouter} from './routes/notifications.route';
 import {usersRouter} from './routes/users.route';
-import {INotification} from './models/notifications.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {

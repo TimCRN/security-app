@@ -82,8 +82,4 @@ export class HomeComponent implements OnInit {
     this.showModal = true;
   }
 
-  hideModal() {
-    this.showModal = false;
-  }
-
 }
