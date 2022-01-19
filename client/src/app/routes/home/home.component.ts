@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   isChildRoute = false;
   modalEvent: INotification | null = null;
   showModal = false;
+  // TODO: Move to notifications service and change to behaviorSubject
   notificationsEnabled = false;
   enableNotificationsEvent: INotification = {
     userId: '',
@@ -61,6 +62,8 @@ export class HomeComponent implements OnInit {
     } else {
       this.events = cachedEvents;
     }
+
+    this.notificationsEnabled = this.swPush.isEnabled;
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {
