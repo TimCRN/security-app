@@ -38,10 +38,20 @@ export const createNotification = async (notification: INotification) => {
   sendPushNotification();
   doc.actions.sentNotification = true;
   await doc.save();
+  // TODO: remove console log
+  // Implement further push logic
   console.log(doc);
 };
 
+// TODO: Implement
+const notifyUser = (userId: string, message: unknown) => {
+  // Get all user's subscriptions
+  // Call sendPushNotification for each subscription
+};
+
+/** Send a push notification */
 const sendPushNotification = () => {
+  // TODO: take subscription as argument
   const subscription = {
     endpoint:
       'https://fcm.googleapis.com/fcm/send/dc4D2JAg3v4:APA91bHtVJ5BmpdkbeQb6HybH2KdgXq5j_bHJpFn6igwQTxkPfzJao1e3M5LCYeEnin781anlwhdh0FFnD_EIdfp-5IJrsy_DuylQBMk0tI5pcFiQPgi5M-hTD0Zf54xRCo4QfHt81iy',

@@ -23,6 +23,8 @@ app.get('/', async (req: Request, res: Response) => {
   createNotification({
     userId: 'fooBaz',
     type: 'critical',
+    title: 'Hello World',
+    description: 'This is a descriptions',
     actions: {
       sentNotification: false,
     },

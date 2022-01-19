@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 export interface INotification {
   userId: string;
   type: 'critical' | 'warning' | 'info';
+  title: string;
+  description?: string;
   devices?: string[];
   actions: {
     sentNotification: boolean;
@@ -21,6 +23,8 @@ const notificationSchema = new mongoose.Schema<INotification>(
   {
     userId: {type: String, required: true},
     type: {type: String, required: true},
+    title: {type: String, required: true},
+    description: String,
     devices: [String],
     actions: {
       sentNotification: Boolean,
