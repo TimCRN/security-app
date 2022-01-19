@@ -18,4 +18,17 @@ export class UserController {
       user,
     });
   }
+
+  /** Get a user by their ID */
+  async getUser(req: Request, res: Response) {
+    const {userId} = req.params;
+    // TODO: Implement error response
+
+    const user = await Users.findOne({_id: userId});
+
+    res.json({
+      success: true,
+      user,
+    });
+  }
 }
