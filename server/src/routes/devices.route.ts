@@ -16,3 +16,5 @@ devicesRouter.get('/', controller.getAllDevices)
 
 devicesRouter.get('/tuya', controller.tuyaInfo)
 
+devicesRouter.get('/tuya/:id', controller.tuyaDeviceInfo)
+
