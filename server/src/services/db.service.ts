@@ -15,7 +15,7 @@ export const connectDB = async () => {
     await mongoose.connect(
       `mongodb+srv://${user}:${password}@${hostname}/${dbname}`
     );
-    console.log('DB connection success!');
+    console.log('📂 DB connection success!');
   } catch (error) {
     console.error(error);
   }
