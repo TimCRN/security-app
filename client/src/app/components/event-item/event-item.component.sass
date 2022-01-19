@@ -19,17 +19,24 @@
     place-content: center
     border-radius: 5px
 
+    &.paused
+      animation-name: none !important
+
     @media (max-width: 800px)
       height: 100%
       aspect-ratio: 1/1
 
-      &.alert
+      &.critical
         animation-name: none !important
 
         svg
           animation: var(--animation-bounce)
 
-    &.alert
+        &.paused
+          svg
+            animation-name: none !important
+
+    &.critical
       background: var(--color-alert)
       animation: var(--animation-bounce)
 

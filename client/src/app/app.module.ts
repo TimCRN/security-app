@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule } from '@angular/forms';
 import { QuickSigninComponent } from './components/quick-signin/quick-signin.component';
+import { EventModalComponent } from './components/event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { QuickSigninComponent } from './components/quick-signin/quick-signin.com
     DeviceItemComponent,
     EventItemComponent,
     LoginComponent,
-    QuickSigninComponent
+    QuickSigninComponent,
+    EventModalComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { QuickSigninComponent } from './components/quick-signin/quick-signin.com
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    providePerformance(() => getPerformance())
+    providePerformance(() => getPerformance()),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

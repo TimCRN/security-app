@@ -1,4 +1,3 @@
-import {createNotification} from './services/notification.service';
 import {connectDB} from './services/db.service';
 import {connectTuya, beginTuyaPoll} from './services/tuya.service';
 import express, {Request, Response} from 'express';
@@ -25,14 +24,6 @@ connectTuya();
 })();
 
 app.get('/', async (req: Request, res: Response) => {
-  createNotification({
-    userId: 'fooBaz',
-    type: 'critical',
-    title: 'Hello World',
-    description: 'This is a descriptions',
-    sentNotification: false,
-    resolved: false,
-  });
   res.send('OK');
 });
 

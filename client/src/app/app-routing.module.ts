@@ -8,7 +8,9 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login'])
 const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
 const routes: Routes = [
   { path: '', component: HomeComponent,...canActivate(redirectUnauthorizedToLogin) },
-  { path: 'login', component: LoginComponent, ...canActivate(redirectLoggedInToHome) }
+  { path: 'login', component: LoginComponent, ...canActivate(redirectLoggedInToHome) },
+  { path: 'event/:id', component: HomeComponent,...canActivate(redirectUnauthorizedToLogin) },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

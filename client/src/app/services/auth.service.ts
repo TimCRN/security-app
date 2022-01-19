@@ -18,10 +18,8 @@ export class AuthService {
     afAuth.authState.subscribe((user: unknown) => {
       if (!!user) {
         this.isSignedIn.next(true);
-        this.router.navigate(['/']);
       } else {
         this.isSignedIn.next(false);
-        this.router.navigate(['/login']);
       }
     })
   }
@@ -35,6 +33,7 @@ export class AuthService {
     try {
       const loginRes = await this.afAuth.signInWithEmailAndPassword(email, password);
       console.log(loginRes);
+      this.router.navigate(['/']);
     } catch (error) {
       console.error(error);
     }
@@ -49,6 +48,7 @@ export class AuthService {
     try {
       const registerRes = await this.afAuth.createUserWithEmailAndPassword(email, password);
       console.log(registerRes);
+      this.router.navigate(['/']);
     } catch (error) {
       console.error(error);
     }
@@ -89,7 +89,9 @@ export class AuthService {
    */
   private async signInWithProvider(provider: GoogleAuthProvider | GithubAuthProvider) {
     try {
-      const loginRes = this.afAuth.signInWithPopup(provider);
+      this.afAuth.signInWithPopup(provider).then(() => {
+        this.router.navigate(['/']);
+      });
     } catch (error) {
       console.error(error);
     }

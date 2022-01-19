@@ -44,7 +44,8 @@ export const groupNotificationsByType = (notifications: INotification[]) => {
  */
 export const createNotification = async (notification: INotification) => {
   const doc = await Notifications.create(notification);
-  await notifyUser(notification);
+  const docId = doc.id;
+  await notifyUser(notification, docId);
   doc.sentNotification = true;
   await doc.save();
   // TODO: Implement further push logic
@@ -56,8 +57,12 @@ export const createNotification = async (notification: INotification) => {
  * - Checks user's preferred notification types (e.g. only critical notifications)
  * - Dispatches notifications via sendPushNotifications()
  * @param notification The notification to dispatch
+ * @param notificationId The id of the notification
  */
-const notifyUser = async (notification: INotification) => {
+const notifyUser = async (
+  notification: INotification,
+  notificationId: string
+) => {
   const {userId} = notification;
 
   try {
@@ -75,7 +80,7 @@ const notifyUser = async (notification: INotification) => {
       return;
 
     for (const pushSub of subscriptions) {
-      sendPushNotification(notification, pushSub);
+      sendPushNotification(notification, pushSub, notificationId);
     }
   } catch (error) {
     console.error(error);
@@ -87,16 +92,27 @@ const notifyUser = async (notification: INotification) => {
  * Dispatch a notification to a specific push subscription
  * @param notification The notification to dispatch
  * @param subscription The push subscription to send the notification to
+ * @param notificationId The ID of the notification being dispatched
  */
 const sendPushNotification = (
   notification: INotification,
-  subscription: IPushSubscription
+  subscription: IPushSubscription,
+  notificationId: string
 ) => {
   const payload = {
     notification: {
       title: notification.title,
+      icon: 'assets/icons/icon-512x512.png',
       // Only assign body property if a notification description was set
       ...(notification.description && {body: notification.description}),
+      data: {
+        onActionClick: {
+          default: {
+            operation: 'navigateLastFocusedOrOpen',
+            url: `/event/${notificationId}?src=push`,
+          },
+        },
+      },
     },
   };
 

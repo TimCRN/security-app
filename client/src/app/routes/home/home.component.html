@@ -4,12 +4,16 @@
 
     <div id="notification-heading-wrapper"  class="section-heading">
       <h1>Event Overview</h1>
-      <span>Last updated: {{ time }}</span>
+      <!-- <span>Last updated: {{ time }}</span> -->
     </div>
 
-    <p *ngIf="events.length === 0">You're all caught up!</p>
+    <p *ngIf="notificationsEnabled && (!events || (events.critical === undefined && events.warning === undefined && events.info === undefined))">You're all caught up!</p>
     <div id="event-list">
-      <app-event-item *ngFor="let event of events" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of events?.critical" [event]="event" [pauseAnimation]="showModal"></app-event-item>
+      <app-event-item *ngFor="let event of events?.warning" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of events?.info" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of events?.info" [event]="event"></app-event-item>
+      <app-event-item *ngIf="!notificationsEnabled" [event]="enableNotificationsEvent" [isNotificationPermissionEvent]="true"></app-event-item>
     </div>
   </div>
 
@@ -28,3 +32,5 @@
   </div>
 
 </div>
+
+<app-event-modal *ngIf="showModal" [event]="modalEvent"></app-event-modal>

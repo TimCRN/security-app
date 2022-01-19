@@ -1,0 +1,14 @@
+<div id="modal-container">
+
+  <div id="modal" class="card">
+
+    <header>
+      <h1>{{ event?.title }}</h1>
+      <button (click)="onCloseModal()">&times;</button>
+    </header>
+
+    <p *ngIf="event?.description">{{ event?.description }}</p>
+
+  </div>
+
+</div>
