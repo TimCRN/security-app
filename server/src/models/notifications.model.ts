@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import {ICircleOfTrustItem} from './user.model';
 
 export interface INotification {
   userId: string;
@@ -7,7 +8,7 @@ export interface INotification {
   description?: string;
   devices?: string[];
   sentNotification: boolean;
-  circleOfTrust?: [ICircleOfTrustItem[]];
+  circleOfTrust?: [ICircleOfTrustNotificationItem[]];
   resolved: boolean;
 }
 
@@ -20,9 +21,7 @@ export interface IPushSubscription {
   };
 }
 
-interface ICircleOfTrustItem {
-  name: string;
-  number: string;
+interface ICircleOfTrustNotificationItem extends ICircleOfTrustItem {
   contacted: boolean;
 }
 
