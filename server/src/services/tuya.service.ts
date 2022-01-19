@@ -1,8 +1,9 @@
 import * as qs from 'qs';
 import * as crypto from 'crypto';
 import { default as axios } from 'axios';
-import { Device, DeviceInput, deviceStatus } from '../models/devices.model';
-import { syncBuiltinESMExports } from 'module';
+import { Device, DeviceInput, deviceNotificationLib } from '../models/devices.model';
+import { Users } from '../models/user.model';
+import { createNotification } from './notification.service';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -150,20 +151,39 @@ async function processChanges(device : DeviceInput)
 {
     const status = await tuyaAPI.getDeviceStatus(device._id)
     let changes : boolean = false;
+    let changedIndexes : number[] = []
 
     for (let index = 0; index < status.result.length; index++) {
         const element = status.result[index].value;
         if(device.status[index].value != element)
         {
             console.log('\x1b[33m%s\x1b[0m','Change detected!')
+            changedIndexes.push(index)
             changes = true;
         }
     }
 
     if(changes)
     {
-        console.log("Changing status")
         await Device.findOneAndUpdate({'_id':device._id}, {$set: {status: status.result} }, {upsert:false})
+        console.log(`Status changed for device ${device._id}`)
+        const user = await Users.findOne({'devices':device._id})
+
+        changedIndexes.forEach(async e => {
+            let nData = deviceNotificationLib[device.category][e][status.result[e].value]
+            if(user && nData)
+            {            
+                console.log('Notification linked to change found. Creating push notification')
+                await createNotification({
+                    userId: user._id,
+                    title: nData.title,
+                    type: nData.type,
+                    description: nData.description,
+                    sentNotification: false,
+                    resolved: false
+                });
+            }
+        });
     }
 }
 
