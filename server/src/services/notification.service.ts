@@ -1,6 +1,7 @@
 import {IPushSubscription} from './../models/notifications.model';
 import {Notifications, INotification} from '../models/notifications.model';
 import webpush from 'web-push';
+import {IPushSubcriptionItem, Users} from '../models/user.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -57,10 +58,28 @@ export const createNotification = async (notification: INotification) => {
  * @param notification The notification to dispatch
  */
 const notifyUser = async (notification: INotification) => {
-  // 1. Get all user's subscriptions
-  // ? Optional: Implement preferred notification levels
-  // ? User might only want push notifications for critical level notifications
-  // 2. Call sendPushNotification for each subscription
+  const {userId} = notification;
+
+  try {
+    const user = await Users.findOne({_id: userId});
+    if (!user) throw Error(`User with ID ${userId} not found`);
+    const subscriptions: IPushSubscription[] = user.pushSubscriptions.map(
+      (item: IPushSubcriptionItem) => item.sub
+    );
+    const notifyFromTypePref = user.settings.notifyFromType;
+
+    if (notifyFromTypePref === 'critical' && notification.type !== 'critical')
+      return;
+
+    if (notifyFromTypePref === 'warning' && notification.type === 'info')
+      return;
+
+    for (const pushSub of subscriptions) {
+      sendPushNotification(notification, pushSub);
+    }
+  } catch (error) {
+    console.error(error);
+  }
   // ? What to do if no push subscriptions were ever registered by the user?
 };
 
