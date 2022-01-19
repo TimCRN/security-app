@@ -4,6 +4,7 @@ import express, {Request, Response} from 'express';
 import {devicesRouter} from './routes/devices.route';
 import cors from 'cors';
 import {notificationsRouter} from './routes/notifications.route';
+import {usersRouter} from './routes/users.route';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -33,5 +34,6 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.use('/devices', devicesRouter);
 app.use('/notifications', notificationsRouter);
+app.use('/users', usersRouter);
 
 app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
