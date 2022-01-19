@@ -64,6 +64,11 @@ export class HomeComponent implements OnInit {
     }
 
     this.notificationsEnabled = this.swPush.isEnabled;
+
+    // TODO: Replace with behaviorSubject in service
+    this.swPush.messages.subscribe(async (message: any) => {
+      this.events = await this.api.getEvents();
+    })
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {
