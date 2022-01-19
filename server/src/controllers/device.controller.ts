@@ -6,24 +6,24 @@ import { tuyaAPI } from '../services/tuya.service';
 export class DeviceController 
 {
     
-    async createDevice(req: Request, res: Response) 
-    {
-        const { name } = req.body;
+    // async createDevice(req: Request, res: Response) 
+    // {
+    //     const { name } = req.body;
 
-        if(!name)
-        {
-            return res.json({
-                message: "The 'name' field must be specified!"
-            });
-        }
+    //     if(!name)
+    //     {
+    //         return res.json({
+    //             message: "The 'name' field must be specified!"
+    //         });
+    //     }
 
-        const input: DeviceInput = {
-            name
-        }
+    //     const input: DeviceInput = {
+    //         name
+    //     }
 
-        const deviceCreated = await Device.create(input)
-        return res.status(201).json(deviceCreated);
-    }
+    //     const deviceCreated = await Device.create(input)
+    //     return res.status(201).json(deviceCreated);
+    // }
 
 
     async getAllDevices(req: Request, res: Response) 
@@ -68,6 +68,13 @@ export class DeviceController
     async tuyaInfo(req: Request, res: Response)
     {
         const data = await tuyaAPI.getDevices();
+        return res.status(201).json(data);
+    }
+
+    async tuyaDeviceInfo(req: Request, res: Response)
+    {
+        const { id } = req.params;
+        const data = await tuyaAPI.getDeviceStatus(id);
         return res.status(201).json(data);
     }
 }
