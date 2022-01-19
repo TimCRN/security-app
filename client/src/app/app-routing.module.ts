@@ -9,7 +9,7 @@ const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
 const routes: Routes = [
   { path: '', component: HomeComponent,...canActivate(redirectUnauthorizedToLogin) },
   { path: 'login', component: LoginComponent, ...canActivate(redirectLoggedInToHome) },
-  { path: 'notification/:id', component: HomeComponent,...canActivate(redirectUnauthorizedToLogin) },
+  { path: 'event/:id', component: HomeComponent,...canActivate(redirectUnauthorizedToLogin) },
   { path: '**', redirectTo: '' },
 ];
 

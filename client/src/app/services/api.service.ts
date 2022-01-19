@@ -8,6 +8,11 @@ import { firstValueFrom } from 'rxjs';
 })
 export class ApiService {
   rootUrl = 'http://localhost:8080';
+  events: {
+    critical: INotification[];
+    warning: INotification[];
+    info: INotification[];
+  } | null = null;
 
   constructor(private http: HttpClient, private afAuth: AngularFireAuth) {}
 
@@ -26,7 +31,10 @@ export class ApiService {
         };
       }>(endpoint)
     );
-    if (res.success) return res.notifications;
+    if (res.success) {
+      this.events = res.notifications!;
+      return res.notifications;
+    }
     throw Error('Unable to retrieve events');
   }
 

@@ -1,0 +1,38 @@
+:host
+  position: fixed
+  top: 0
+  left: 0
+  height: 100vh
+  width: 100vw
+  z-index: 10
+  background: rgba(0,0,0,.2)
+  backdrop-filter: blur(8px)
+
+#modal-container
+  display: grid
+  height: 100vh
+  place-content: center
+
+  #modal
+    width: min(90vw, 800px)
+
+    header
+      display: flex
+      justify-content: space-between
+      align-items: center
+
+      button
+        background: none
+        border: 2px solid var(--brand)
+        color: var(--brand)
+        font-size: 2rem
+        width: 40px
+        height: 40px
+        border-radius: 100%
+        cursor: pointer
+        transition: color .2s ease, background .2s ease
+
+        &:hover, &:focus
+          background: var(--brand)
+          color: var(--surface2)
+

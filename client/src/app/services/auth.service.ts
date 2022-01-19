@@ -75,14 +75,12 @@ export class AuthService {
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     await this.signInWithProvider(provider);
-    this.router.navigate(['/']);
   }
 
   /** Launch GitHub OAuth login flow */
   async signInWithGitHub() {
     const provider = new GithubAuthProvider();
     await this.signInWithProvider(provider);
-    this.router.navigate(['/']);
   }
 
   /**
@@ -91,7 +89,9 @@ export class AuthService {
    */
   private async signInWithProvider(provider: GoogleAuthProvider | GithubAuthProvider) {
     try {
-      const loginRes = this.afAuth.signInWithPopup(provider);
+      this.afAuth.signInWithPopup(provider).then(() => {
+        this.router.navigate(['/']);
+      });
     } catch (error) {
       console.error(error);
     }

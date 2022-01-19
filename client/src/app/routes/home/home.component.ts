@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { first } from 'rxjs';
+import { SwPush } from '@angular/service-worker';
 
 @Component({
   selector: 'app-home',
@@ -13,16 +14,29 @@ import { first } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-  events: {critical: INotification[], warning: INotification[], info: INotification[]} | undefined;
+  events: {critical: INotification[], warning: INotification[], info: INotification[]} | undefined = undefined;
   time!: string;
   isChildRoute = false;
   modalEvent: INotification | null = null;
   showModal = false;
+  notificationsEnabled = false;
+  enableNotificationsEvent: INotification = {
+    userId: '',
+    _id: '',
+    title: 'Enable notifications',
+    type: 'info',
+    devices: ['All devices'],
+    sentNotification: false,
+    resolved: false,
+    createdAt: Date.now().toString(),
+    updatedAt: ''
+  }
 
   constructor(
     private notifications: NotificationsService,
     private route: ActivatedRoute,
-    private api: ApiService
+    private api: ApiService,
+    private swPush: SwPush
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -31,19 +45,26 @@ export class HomeComponent implements OnInit {
     const minutes = `0${d.getMinutes()}`.slice(-2);
     this.time = `${hours}:${minutes}`
 
-    // this.route.url.pipe(first()).subscribe((segments: UrlSegment[]) => {
-    //   console.log(segments);
-    // });
+    // Show event modal if user navigated to a specific event
+    this.route.url.pipe(first()).subscribe((segments: UrlSegment[]) => {
+      if (segments.length === 2) {
+        this.prepareModal({eventId: segments[1].toString()});
+      }
+    });
 
     // this.route.params.subscribe(x => console.log(x))
 
     // this.events = await this.api.getEvents();
-    const events = await this.api.getEvents();
-    this.events = events;
-  }
+    const cachedEvents = this.api.events;
+    if (cachedEvents === null) {
+      this.events = await this.api.getEvents();
+    } else {
+      this.events = cachedEvents;
+    }
 
-  onSubscribeToNotifications() {
-    this.notifications.subscribeToNotifications();
+    this.swPush.messages.subscribe((event: any) => {
+      console.log(event);
+    });
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {

@@ -2,6 +2,7 @@ import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { INotification } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 import { format } from 'timeago.js';
 
 @Component({
@@ -12,16 +13,23 @@ import { format } from 'timeago.js';
 export class EventItemComponent implements OnInit {
 
   @Input() event!: INotification;
+  @Input() pauseAnimation: boolean = false;
+  @Input() isNotificationPermissionEvent = false;
 
   constructor(
-    private notifications: NotificationsService
+    private notifications: NotificationsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void { }
 
-  onEnableNotifications() {
+  onRequestPermission() {
     console.log('Enabling notifications...')
     this.notifications.subscribeToNotifications();
+  }
+
+  onShowEventModal() {
+    this.router.navigate(['event', this.event._id]);
   }
 
   formatDate(timestamp: string) {
