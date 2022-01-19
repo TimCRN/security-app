@@ -1,6 +1,9 @@
+import { environment } from './../../../environments/environment';
 import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -41,9 +44,11 @@ export class HomeComponent implements OnInit {
     },
   ];
   time!: string;
+  isChildRoute = false;
 
   constructor(
-    private notifications: NotificationsService
+    private notifications: NotificationsService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +56,13 @@ export class HomeComponent implements OnInit {
     const hours = `0${d.getHours()}`.slice(-2);
     const minutes = `0${d.getMinutes()}`.slice(-2);
     this.time = `${hours}:${minutes}`
+
+    this.route.url.pipe(first()).subscribe((segments: UrlSegment[]) => {
+      console.log(segments);
+    });
+
+    this.route.params.subscribe(x => console.log(x))
+
   }
 
   onSubscribeToNotifications() {
