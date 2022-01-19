@@ -17,9 +17,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+connectTuya();
+
 (async () => {
   await connectDB();
-  await connectTuya();
   await beginTuyaPoll();
 })();
 
@@ -38,5 +39,7 @@ app.get('/', async (req: Request, res: Response) => {
 app.use('/devices', devicesRouter);
 app.use('/notifications', notificationsRouter);
 app.use('/users', usersRouter);
+
+console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`)
 
 app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
