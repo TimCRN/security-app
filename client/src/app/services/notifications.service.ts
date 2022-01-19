@@ -36,5 +36,7 @@ export class NotificationsService {
   }
 
   // TODO: Send PushSubcription to backend and store in DB with user ID
-  private registerNotificationSubscription(sub: PushSubscription) {}
+  private registerNotificationSubscription(sub: PushSubscription) {
+    console.log(sub);
+  }
 }
