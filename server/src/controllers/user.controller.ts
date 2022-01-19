@@ -31,4 +31,19 @@ export class UserController {
       user,
     });
   }
+
+  async updateUser(req: Request, res: Response) {
+    const {userId} = req.params;
+    const patch = req.body;
+    // TODO: Implement error response
+
+    const user = await Users.findOneAndUpdate({_id: userId}, patch, {
+      runValidators: true,
+      new: true,
+    });
+    res.json({
+      success: true,
+      user,
+    });
+  }
 }
