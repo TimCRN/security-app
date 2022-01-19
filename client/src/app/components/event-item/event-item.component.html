@@ -11,15 +11,15 @@
       {{ event.title }}
     </h3>
     <div class="event-meta-wrapper">
-      <p class="devices-meta">{{ event.devices }}</p>
-      <span class="meta-divider" *ngIf="event.devices && event.createdAt">|</span>
-      <p class="time-meta">{{ event.createdAt }}</p>
+      <p class="devices-meta" *ngIf="event.devices && event.devices.length > 0">{{ event.devices }}</p>
+      <span class="meta-divider" *ngIf="event.devices && event.devices.length > 0 && event.createdAt">|</span>
+      <p class="time-meta">{{ formatDate(event.createdAt) }}</p>
     </div>
   </div>
 
   <div class="event-action-wrapper">
-    <div id="event-secondary-action" class="event-action button inverse small">Foo</div>
-    <div (click)="onEnableNotifications()" id="event-primary-action" class="event-action button small">Bar</div>
+    <button id="event-secondary-action" class="event-action button inverse small">Dismiss</button>
+    <button (click)="onEnableNotifications()" id="event-primary-action" class="event-action button small">Show</button>
   </div>
 
 </div>

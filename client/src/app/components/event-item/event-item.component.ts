@@ -1,7 +1,8 @@
 import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
-import {INotification} from 'src/app/services/api.service';
+import { INotification } from 'src/app/services/api.service';
+import { format } from 'timeago.js';
 
 @Component({
   selector: 'app-event-item',
@@ -21,6 +22,10 @@ export class EventItemComponent implements OnInit {
   onEnableNotifications() {
     console.log('Enabling notifications...')
     this.notifications.subscribeToNotifications();
+  }
+
+  formatDate(timestamp: string) {
+    return format(timestamp, 'en_US');
   }
 
 }

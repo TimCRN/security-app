@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
   events: {critical: INotification[], warning: INotification[], info: INotification[]} | undefined;
   time!: string;
   isChildRoute = false;
+  modalEvent: INotification | null = null;
+  showModal = false;
 
   constructor(
     private notifications: NotificationsService,
@@ -38,11 +40,25 @@ export class HomeComponent implements OnInit {
     // this.events = await this.api.getEvents();
     const events = await this.api.getEvents();
     this.events = events;
-    console.log(events);
   }
 
   onSubscribeToNotifications() {
     this.notifications.subscribeToNotifications();
+  }
+
+  async prepareModal(args: {event?: INotification, eventId?: string}) {
+    if (args.event) {
+      this.modalEvent = args.event;
+    } else {
+      if (!args.eventId) throw Error('Pass either an event or an event ID');
+      const eventRes = await this.api.getEvent(args.eventId);
+      this.modalEvent = eventRes;
+    }
+    this.showModal = true;
+  }
+
+  hideModal() {
+    this.showModal = false;
   }
 
 }

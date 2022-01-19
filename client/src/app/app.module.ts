@@ -18,6 +18,7 @@ import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule } from '@angular/forms';
 import { QuickSigninComponent } from './components/quick-signin/quick-signin.component';
+import { EventModalComponent } from './components/event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { QuickSigninComponent } from './components/quick-signin/quick-signin.com
     DeviceItemComponent,
     EventItemComponent,
     LoginComponent,
-    QuickSigninComponent
+    QuickSigninComponent,
+    EventModalComponent
   ],
   imports: [
     BrowserModule,

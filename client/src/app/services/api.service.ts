@@ -4,28 +4,39 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-
   rootUrl = 'http://localhost:8080';
 
-  constructor(
-    private http: HttpClient,
-    private afAuth: AngularFireAuth,
-  ) { }
+  constructor(private http: HttpClient, private afAuth: AngularFireAuth) {}
 
   async getEvents() {
     const user = await this.afAuth.currentUser;
     const userId = user?.uid;
     // TODO: Error handling
-    console.log(userId);
     const endpoint = `${this.rootUrl}/notifications/all/${userId}`;
-    const res = await firstValueFrom(this.http.get<{success: boolean, notifications?: {critical: INotification[], warning: INotification[], info: INotification[]}}>(endpoint));
-    if (res.success) {
-      return res.notifications;
-    }
+    const res = await firstValueFrom(
+      this.http.get<{
+        success: boolean;
+        notifications?: {
+          critical: INotification[];
+          warning: INotification[];
+          info: INotification[];
+        };
+      }>(endpoint)
+    );
+    if (res.success) return res.notifications;
     throw Error('Unable to retrieve events');
+  }
+
+  async getEvent(eventId: string) {
+    const endpoint = `${this.rootUrl}/notifications/${eventId}`;
+    const res = await firstValueFrom(
+      this.http.get<{ success: boolean; notification: INotification }>(endpoint)
+    );
+    if (res.success) return res.notification;
+    throw Error('Unable to retrieve event');
   }
 }
 
