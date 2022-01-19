@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 export interface IUser {
   _id: string;
-  name: string;
+  name?: string;
   email: string;
   devices: string[];
   circleOfTrust: [ICircleOfTrustItem[]];
@@ -30,9 +30,9 @@ interface IPushSubcriptionItem {
 const userSchema = new mongoose.Schema<IUser>(
   {
     _id: {type: String, required: true},
-    name: {type: String, required: true},
+    name: String,
     email: {type: String, required: true},
-    devices: [String],
+    devices: {type: [String], default: []},
     circleOfTrust: [[{name: String, number: String}]],
     settings: {
       notifyFromType: {type: String, default: 'warning'},
@@ -41,19 +41,22 @@ const userSchema = new mongoose.Schema<IUser>(
       maxConsecutiveOfflineStates: {type: Number, default: 5},
       maxOfflineDevicesPercentage: {type: Number, default: 25},
     },
-    pushSubscriptions: [
-      {
-        name: String,
-        sub: {
-          endpoint: {type: String, required: true},
-          expirationTime: {type: String, default: null},
-          keys: {
-            p256dh: {type: String, required: true},
-            auth: {type: String, required: true},
+    pushSubscriptions: {
+      type: [
+        {
+          name: String,
+          sub: {
+            endpoint: {type: String, required: true},
+            expirationTime: {type: String, default: null},
+            keys: {
+              p256dh: {type: String, required: true},
+              auth: {type: String, required: true},
+            },
           },
         },
-      },
-    ],
+      ],
+      default: [],
+    },
   },
   {
     collection: 'users',
