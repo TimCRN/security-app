@@ -46,6 +46,16 @@ export class ApiService {
     if (res.success) return res.notification;
     throw Error('Unable to retrieve event');
   }
+
+  async registerPushSubscription(sub: PushSubscription) {
+    const user = await this.afAuth.currentUser;
+    const userId = user?.uid;
+    const endpoint = `${this.rootUrl}/users/${userId}/registerPush`;
+    const res = await firstValueFrom(
+      this.http.post(endpoint, {name: null, sub})
+    )
+    console.log(res);
+  }
 }
 
 export interface INotification {

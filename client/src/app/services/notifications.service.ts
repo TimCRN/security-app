@@ -1,3 +1,4 @@
+import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
@@ -6,7 +7,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class NotificationsService {
-  constructor(private swPush: SwPush) {
+  constructor(
+    private swPush: SwPush,
+    private api: ApiService
+    ) {
     if (swPush.isEnabled) {
       swPush.notificationClicks.subscribe(
         (raw: {
@@ -14,6 +18,10 @@ export class NotificationsService {
           notification: NotificationOptions & { title: string };
         }) => console.log(raw)
       );
+      swPush.messages.subscribe((event: any) => {
+        console.log(event);
+        this.api.getEvents();
+      });
     }
   }
 
@@ -35,8 +43,7 @@ export class NotificationsService {
       );
   }
 
-  // TODO: Send PushSubcription to backend and store in DB with user ID
   private registerNotificationSubscription(sub: PushSubscription) {
-    console.log(sub);
+    this.api.registerPushSubscription(sub);
   }
 }

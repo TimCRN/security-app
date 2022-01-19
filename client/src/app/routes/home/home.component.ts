@@ -61,10 +61,6 @@ export class HomeComponent implements OnInit {
     } else {
       this.events = cachedEvents;
     }
-
-    this.swPush.messages.subscribe((event: any) => {
-      console.log(event);
-    });
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {

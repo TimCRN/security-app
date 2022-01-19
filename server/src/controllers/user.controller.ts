@@ -54,6 +54,8 @@ export class UserController {
     const subscription: IPushSubcriptionItem = req.body;
     // TODO: Implement error response
 
+    console.log(subscription);
+
     // TODO: wrap in trycatch
     const user = await Users.findOne({_id: userId});
     user?.pushSubscriptions.push(subscription);
