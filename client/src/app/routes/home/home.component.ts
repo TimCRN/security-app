@@ -63,7 +63,13 @@ export class HomeComponent implements OnInit {
       this.events = cachedEvents;
     }
 
-    this.notificationsEnabled = this.swPush.isEnabled;
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        this.notificationsEnabled = true;
+      } else {
+        this.notificationsEnabled = false;
+      }
+    }
 
     // TODO: Replace with behaviorSubject in service
     this.swPush.messages.subscribe(async (message: any) => {
