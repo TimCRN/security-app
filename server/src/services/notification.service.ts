@@ -1,3 +1,4 @@
+import {IPushSubscription} from './../models/notifications.model';
 import {Notifications, INotification} from '../models/notifications.model';
 import webpush from 'web-push';
 
@@ -44,12 +45,17 @@ export const createNotification = async (notification: INotification) => {
   await notifyUser(notification);
   doc.sentNotification = true;
   await doc.save();
-  // TODO: remove console log
-  // Implement further push logic
-  console.log(doc);
+  // TODO: Implement further push logic
 };
 
 // TODO: Implement
+/**
+ * Find user's push subscriptions and use them to send notifications
+ * - Retrieves a user's registered pushSubscriptions
+ * - Checks user's preferred notification types (e.g. only critical notifications)
+ * - Dispatches notifications via sendPushNotifications()
+ * @param notification The notification to dispatch
+ */
 const notifyUser = async (notification: INotification) => {
   // 1. Get all user's subscriptions
   // ? Optional: Implement preferred notification levels
@@ -58,24 +64,20 @@ const notifyUser = async (notification: INotification) => {
   // ? What to do if no push subscriptions were ever registered by the user?
 };
 
-/** Send a push notification */
-const sendPushNotification = () => {
-  // TODO: take subscription as argument
-  const subscription = {
-    endpoint:
-      'https://fcm.googleapis.com/fcm/send/dc4D2JAg3v4:APA91bHtVJ5BmpdkbeQb6HybH2KdgXq5j_bHJpFn6igwQTxkPfzJao1e3M5LCYeEnin781anlwhdh0FFnD_EIdfp-5IJrsy_DuylQBMk0tI5pcFiQPgi5M-hTD0Zf54xRCo4QfHt81iy',
-    expirationTime: null,
-    keys: {
-      p256dh:
-        'BD_nhYJsvfspbJzZb6iqkU6DhZMJTBT706wPup3bnHPiYzRyH1LCDelodWcwOB2TDrXhyPyC5XaYUAGaydtIA7g',
-      auth: 'hS04otREVBvBSPHNMLO3Ig',
-    },
-  };
-
+/**
+ * Dispatch a notification to a specific push subscription
+ * @param notification The notification to dispatch
+ * @param subscription The push subscription to send the notification to
+ */
+const sendPushNotification = (
+  notification: INotification,
+  subscription: IPushSubscription
+) => {
   const payload = {
     notification: {
-      title: 'Hello World',
-      body: 'This is a notification',
+      title: notification.title,
+      // Only assign body property if a notification description was set
+      ...(notification.description && {body: notification.description}),
     },
   };
 

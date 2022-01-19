@@ -11,6 +11,15 @@ export interface INotification {
   resolved: boolean;
 }
 
+export interface IPushSubscription {
+  endpoint: string;
+  expirationTime: null | string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}
+
 interface ICircleOfTrustItem {
   name: string;
   number: string;
