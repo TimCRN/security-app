@@ -7,12 +7,15 @@ export class UserController {
     const {userId, email} = req.body;
     // TODO: Implement error response
 
+    // TODO: Implement error handling if userId was used before or another error occurred
     const user = await Users.create({
       _id: userId,
       email,
     });
 
-    console.log(user);
-    res.send('OK');
+    res.status(201).json({
+      success: true,
+      user,
+    });
   }
 }
