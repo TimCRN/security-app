@@ -102,6 +102,7 @@ const sendPushNotification = (
   const payload = {
     notification: {
       title: notification.title,
+      icon: 'assets/icons/icon-512x512.png',
       // Only assign body property if a notification description was set
       ...(notification.description && {body: notification.description}),
       data: {
