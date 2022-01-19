@@ -8,6 +8,7 @@ if (process.env.ENV !== 'prod') {
   require('dotenv').config();
 }
 
+// Set web push credentials
 webpush.setVapidDetails(
   'mailto:hi@niels.codes',
   process.env.VAPID_PUBLIC!,
@@ -49,7 +50,6 @@ export const createNotification = async (notification: INotification) => {
   // TODO: Implement further push logic
 };
 
-// TODO: Implement
 /**
  * Find user's push subscriptions and use them to send notifications
  * - Retrieves a user's registered pushSubscriptions
