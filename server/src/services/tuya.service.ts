@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import * as crypto from 'crypto';
-import { default as axios } from 'axios';
+import { default as axios, Method } from 'axios';
 import { Device, DeviceInput, deviceNotificationLib } from '../models/devices.model';
 import { Users } from '../models/user.model';
 import { createNotification } from './notification.service';
@@ -23,15 +23,11 @@ const config = {
     /* Poll Rate */
     pollRate: Number(process.env.TUYA_POLL_RATE)
 };
- const httpClient = axios.create({
+
+const httpClient = axios.create({
     baseURL: config.host,
     timeout: 5 * 1e3,
 });
-
-async function main() {
-    await getToken();
-    console.log('🔑 Tuya token acquired');
-}
 
 /**
  * fetch highway login token
@@ -103,9 +99,15 @@ async function getRequestSign(
 }
 
 export const connectTuya = async () => {
-    main().catch(err => {
+    try
+    {
+        await getToken();
+        console.log('🔑 Tuya token acquired');
+    }
+    catch(err)
+    {
         throw Error(`ERROR: ${err}`);
-    });    
+    }
 }
 
 function sleep()
@@ -117,17 +119,13 @@ export const beginTuyaPoll = async() => {
     while(true)
     {
         const data = await tuyaAPI.getDevices();
-        data.result.list.forEach(async (e: any) => {
-            const d = await Device.findById(String(e.id))
-            if(!d)
-            {
-                await addDeviceToDB(e)
-            }
-            else
-            {
-                await processChanges(d)
-            }
-        })
+        if(data.success)
+        {
+            data.result.list.forEach(async (e: any) => {
+                const d = await Device.findById(String(e.id))
+                !d ? await addDeviceToDB(e) : await processChanges(d)
+            })
+        }        
         await sleep();
     }
 }
@@ -198,13 +196,10 @@ async function processChanges(device : DeviceInput)
 
 class TuyaAPI {
 
-    public async getDevices() 
+    private async _request(url: string, method: Method, query? : {})
     {
-        const query = {};
-        const method = 'GET';
-        const url = '/v1.2/iot-03/devices';
         const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
-    
+
         const { data } = await httpClient.request({
             method,
             data: {},
@@ -212,61 +207,44 @@ class TuyaAPI {
             headers: reqHeaders,
             url: reqHeaders.path,
         });
+         
+        if (data.code == 1010) {
+            console.log('Tuya Token is invalid. Attempting to fetch a new token.')
+            await connectTuya();
+        }
+        else if(!data)
+        {
+            throw Error('An unexpected error occured. No data was retrieved from the request');            
+        }
 
-        if (!data || !data.success) {
-            throw Error(`Request highway Failed: ${data.msg}`);
-        }
-        else {
-            return data
-        }
+        return data
+    }
+
+    public async getDevices() 
+    {
+        return this._request(
+            '/v1.2/iot-03/devices',
+            'GET'
+        )
     }
 
     public async getDeviceStatus(id : string)
     {
-        const query = {};
-        const method = 'GET';
-        const url = `/v1.0/iot-03/devices/${id}/status`;
-        const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
-    
-        const { data } = await httpClient.request({
-            method,
-            data: {},
-            params: {},
-            headers: reqHeaders,
-            url: reqHeaders.path,
-        });
-
-        if (!data || !data.success) {
-            throw Error(`Request highway Failed: ${data.msg}`);
-        }
-        else {
-            return data
-        }
+        return this._request(
+            `/v1.0/iot-03/devices/${id}/status`,
+            'GET'
+        )
     }
 
     public async getAssetInfo(id : string)
     {
-        const query = {
-            'asset_ids': id
-        };
-        const method = 'GET';
-        const url = `/v1.0/iot-02/assets`;
-        const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
-    
-        const { data } = await httpClient.request({
-            method,
-            data: {},
-            params: {},
-            headers: reqHeaders,
-            url: reqHeaders.path,
-        });
-
-        if (!data || !data.success) {
-            throw Error(`Request highway Failed: ${data.msg}`);
-        }
-        else {
-            return data
-        }
+        return this._request(
+            `/v1.0/iot-02/assets`,
+            'GET',
+            {
+                'asset_ids': id
+            }
+        )
     }
 }
 
