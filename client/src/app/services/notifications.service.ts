@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
@@ -9,7 +10,8 @@ import { environment } from 'src/environments/environment';
 export class NotificationsService {
   constructor(
     private swPush: SwPush,
-    private api: ApiService
+    private api: ApiService,
+    private router: Router
     ) {
     if (swPush.isEnabled) {
       swPush.notificationClicks.subscribe(
@@ -19,8 +21,17 @@ export class NotificationsService {
         }) => console.log(raw)
       );
       swPush.messages.subscribe((event: any) => {
-        console.log(event);
+        const castEvent = event as PushNotification;
+        const eventTargetURL = castEvent.notification.data.onActionClick.default.url;
+        const [targetURL,] = eventTargetURL.split('?');
         this.api.getEvents();
+
+        // TODO: Only show modal when window is in focus
+        // Disabled for testing, as DevTools takes away focus from the document
+        // if (document.hasFocus()) {
+          this.router.navigateByUrl(targetURL);
+        // }
+
       });
     }
   }
@@ -45,5 +56,21 @@ export class NotificationsService {
 
   private registerNotificationSubscription(sub: PushSubscription) {
     this.api.registerPushSubscription(sub);
+  }
+}
+
+interface PushNotification {
+  notification: {
+    body: string;
+    title: string;
+    icon: string;
+    data: {
+      onActionClick: {
+        default: {
+          operation: string;
+          url: string;
+        }
+      }
+    }
   }
 }
