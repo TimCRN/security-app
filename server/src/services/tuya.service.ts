@@ -132,12 +132,14 @@ export const beginTuyaPoll = async() => {
     }
 }
 
-async function addDeviceToDB(device: { id: string; name: any; model: any; category_name: any; online: any; })
+async function addDeviceToDB(device: { id: string; name: any; asset_id: string; model: any; category_name: any; online: any; })
 {
     console.log(`Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`)
     const input : DeviceInput = {
         _id : device.id,
         name : device.name,
+        asset_id: device.asset_id,
+        asset_name: (await tuyaAPI.getAssetInfo(device.asset_id)).result[0].asset_full_name,
         model : device.model,
         category : device.category_name,
         online : device.online,
@@ -170,19 +172,26 @@ async function processChanges(device : DeviceInput)
         const user = await Users.findOne({'devices':device._id})
 
         changedIndexes.forEach(async e => {
-            let nData = deviceNotificationLib[device.category][e][status.result[e].value]
-            if(user && nData)
-            {            
-                console.log('Notification linked to change found. Creating push notification')
-                await createNotification({
-                    userId: user._id,
-                    title: nData.title,
-                    type: nData.type,
-                    description: nData.description,
-                    sentNotification: false,
-                    resolved: false
-                });
+            try
+            {
+                let nData = deviceNotificationLib[device.category][e][status.result[e].value]
+                if(user && nData)
+                {            
+                    console.log('Notification linked to change found. Creating push notification')
+                    await createNotification({
+                        userId: user._id,
+                        title: nData.title,
+                        type: nData.type,
+                        description: nData.description,
+                        sentNotification: false,
+                        resolved: false
+                    });
+                }
             }
+            catch(err)
+            {
+                console.log(`Error catched while trying to find/create push notification: ${(err as Error).message}`)
+            }            
         });
     }
 }
@@ -217,6 +226,31 @@ class TuyaAPI {
         const query = {};
         const method = 'GET';
         const url = `/v1.0/iot-03/devices/${id}/status`;
+        const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
+    
+        const { data } = await httpClient.request({
+            method,
+            data: {},
+            params: {},
+            headers: reqHeaders,
+            url: reqHeaders.path,
+        });
+
+        if (!data || !data.success) {
+            throw Error(`Request highway Failed: ${data.msg}`);
+        }
+        else {
+            return data
+        }
+    }
+
+    public async getAssetInfo(id : string)
+    {
+        const query = {
+            'asset_ids': id
+        };
+        const method = 'GET';
+        const url = `/v1.0/iot-02/assets`;
         const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
     
         const { data } = await httpClient.request({
