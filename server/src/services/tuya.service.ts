@@ -208,7 +208,6 @@ class TuyaAPI {
             throw Error(`Request highway Failed: ${data.msg}`);
         }
         else {
-            console.log("Devices pulled")
             return data
         }
     }
