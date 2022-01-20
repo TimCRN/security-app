@@ -8,6 +8,7 @@ export type DeviceDocument = mongoose.Document & {
     asset_name: string;
     model?: string;
     category: string;
+    category_name: string;
     online: boolean;
     status: deviceStatus[];
 }
@@ -19,6 +20,7 @@ export type DeviceInput = {
     asset_name: DeviceDocument['asset_name'];
     model: DeviceDocument['model'];
     category: DeviceDocument['category'];
+    category_name: DeviceDocument['category_name'];
     online: DeviceDocument['online'];
     status: DeviceDocument['status'];
 }
@@ -38,6 +40,20 @@ export const deviceNotificationLib : Record<string, Record<string, Record<string
     'Gas Detector': 
     { 
         '0' : // Gas Sensor State
+        {
+            '1': // Gas Detected
+            { 
+                type: 'critical',
+                title: 'Gas detected',
+            }
+        }
+    }
+}
+
+export const deviceNotificationLib2 : Record<string, Record<string, Record<string, simpleNotificationData>>> = {
+    'rqbj': // Gas Detector 
+    { 
+        'gas_sensor_state' :
         {
             '1': // Gas Detected
             { 
