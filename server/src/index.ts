@@ -31,6 +31,6 @@ app.use('/devices', devicesRouter);
 app.use('/notifications', notificationsRouter);
 app.use('/users', usersRouter);
 
-console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`)
+console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`);
 
 app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
