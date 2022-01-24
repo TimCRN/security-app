@@ -4,6 +4,8 @@ import { INotification } from "./notifications.model";
 export type DeviceDocument = mongoose.Document & {
     _id: string;
     name: string;
+    asset_id: string;
+    asset_name: string;
     model?: string;
     category: string;
     online: boolean;
@@ -13,6 +15,8 @@ export type DeviceDocument = mongoose.Document & {
 export type DeviceInput = {
     _id: DeviceDocument['_id'];
     name: DeviceDocument['name'];
+    asset_id: DeviceDocument['asset_id'];
+    asset_name: DeviceDocument['asset_name'];
     model: DeviceDocument['model'];
     category: DeviceDocument['category'];
     online: DeviceDocument['online'];
@@ -53,6 +57,13 @@ const deviceSchema = new mongoose.Schema(
         name: {
             type: String,
             required: true
+        },
+        asset_id: {
+            type: String,
+            required: true
+        },
+        asset_name: {
+            type: String
         },
         model: {
             type: String
