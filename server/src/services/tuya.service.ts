@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as qs from 'qs';
 import * as crypto from 'crypto';
 import {default as axios, Method} from 'axios';
@@ -29,8 +30,8 @@ const config = {
 };
 
 const httpClient = axios.create({
-    baseURL: config.host,
-    timeout: 5 * 1e3,
+  baseURL: config.host,
+  timeout: 5 * 1e3,
 });
 
 /**
@@ -81,7 +82,7 @@ async function encryptStr(str: string, secret: string): Promise<string> {
 async function getRequestSign(
   path: string,
   method: string,
-  headers: {[k: string]: string} = {},
+  // headers: {[k: string]: string} = {},
   query: {[k: string]: any} = {},
   body: {[k: string]: any} = {}
 ) {
@@ -112,49 +113,55 @@ async function getRequestSign(
 }
 
 export const connectTuya = async () => {
-    try {
-        await getToken();
-        console.log('🔑 Tuya token acquired');
-    } catch(err) {
-        throw Error(`ERROR: ${err}`);
-    }
-}
-
+  try {
+    await getToken();
+    console.log('🔑 Tuya token acquired');
+  } catch (err) {
+    throw Error(`ERROR: ${err}`);
+  }
+};
 
 function sleep() {
   return new Promise(resolve => setTimeout(resolve, config.pollRate));
 }
 
-export const beginTuyaPoll = async() => {
-    while(true)
-    {
-        const data = await tuyaAPI.getDevices();
-        if(data.success)
-        {
-            data.result.list.forEach(async (e: any) => {
-                const d = await Device.findById(String(e.id))
-                !d ? await addDeviceToDB(e) : await processChanges(d)
-            })
-        }        
-        await sleep();
+export const beginTuyaPoll = async () => {
+  while (true) {
+    const data = await tuyaAPI.getDevices();
+    if (data.success) {
+      data.result.list.forEach(async (e: any) => {
+        const d = await Device.findById(String(e.id));
+        !d ? await addDeviceToDB(e) : await processChanges(d);
+      });
     }
-}
+    await sleep();
+  }
+};
 
-async function addDeviceToDB(device: { id: string; name: any; asset_id: string; model: any; category_name: any; online: any; })
-{
-    console.log(`Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`)
-    const input : DeviceInput = {
-        _id : device.id,
-        name : device.name,
-        asset_id: device.asset_id,
-        asset_name: (await tuyaAPI.getAssetInfo(device.asset_id)).result[0].asset_full_name,
-        model : device.model,
-        category : device.category_name,
-        online : device.online,
-        status : (await tuyaAPI.getDeviceStatus(device.id)).result
-    }
-    Device.create(input);
-    console.log(`Device '${device.name}' has been added!`)
+async function addDeviceToDB(device: {
+  id: string;
+  name: string;
+  asset_id: string;
+  model: string;
+  category_name: string;
+  online: boolean;
+}) {
+  console.log(
+    `Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`
+  );
+  const input: DeviceInput = {
+    _id: device.id,
+    name: device.name,
+    asset_id: device.asset_id,
+    asset_name: (await tuyaAPI.getAssetInfo(device.asset_id)).result[0]
+      .asset_full_name,
+    model: device.model,
+    category: device.category_name,
+    online: device.online,
+    status: (await tuyaAPI.getDeviceStatus(device.id)).result,
+  };
+  Device.create(input);
+  console.log(`Device '${device.name}' has been added!`);
 }
 
 async function processChanges(device: DeviceInput) {
@@ -171,43 +178,45 @@ async function processChanges(device: DeviceInput) {
     }
   }
 
-  if(changes){
-        await Device.findOneAndUpdate({'_id':device._id}, {$set: {status: status.result} }, {upsert:false})
-        console.log(`Status changed for device ${device._id}`)
-        const user = await Users.findOne({'devices':device._id})
+  if (changes) {
+    await Device.findOneAndUpdate(
+      {_id: device._id},
+      {$set: {status: status.result}},
+      {upsert: false}
+    );
+    console.log(`Status changed for device ${device._id}`);
+    const user = await Users.findOne({devices: device._id});
 
-        changedIndexes.forEach(async e => {
-            try
-            {
-                let nData = deviceNotificationLib[device.category][e][status.result[e].value]
-                if(user && nData)
-                {            
-                    console.log('Notification linked to change found. Creating push notification')
-                    await createNotification({
-                        userId: user._id,
-                        title: nData.title,
-                        type: nData.type,
-                        description: nData.description,
-                        sentNotification: false,
-                        resolved: false
-                    });
-                }
-            }
-            catch(err)
-            {
-                console.log(`Error catched while trying to find/create push notification: ${(err as Error).message}`)
-            }            
-        });
+    changedIndexes.forEach(async e => {
+      try {
+        const nData =
+          deviceNotificationLib[device.category][e][status.result[e].value];
+        if (user && nData) {
+          console.log(
+            'Notification linked to change found. Creating push notification'
+          );
+          await createNotification({
+            userId: user._id,
+            title: nData.title,
+            type: nData.type,
+            description: nData.description,
+            sentNotification: false,
+            resolved: false,
+          });
+        }
+      } catch (err) {
+        console.log(
+          `Error catched while trying to find/create push notification: ${
+            (err as Error).message
+          }`
+        );
       }
     });
   }
 }
 
 class TuyaAPI {
-  public async getDevices() {
-    const query = {};
-    const method = 'GET';
-    const url = '/v1.2/iot-03/devices';
+  private async _request(url: string, method: Method, query?: {}) {
     const reqHeaders: {[k: string]: string} = await getRequestSign(
       url,
       method,
@@ -215,58 +224,37 @@ class TuyaAPI {
       query
     );
 
-    private async _request(url: string, method: Method, query? : {})
-    {
-        const reqHeaders: { [k: string]: string } = await getRequestSign(url, method, {}, query);
+    const {data} = await httpClient.request({
+      method,
+      data: {},
+      params: {},
+      headers: reqHeaders,
+      url: reqHeaders.path,
+    });
 
-        const { data } = await httpClient.request({
-            method,
-            data: {},
-            params: {},
-            headers: reqHeaders,
-            url: reqHeaders.path,
-        });
-         
-        if (data.code == 1010) {
-            console.log('Tuya Token is invalid. Attempting to fetch a new token.')
-            await connectTuya();
-        }
-        else if(!data)
-        {
-            throw Error('An unexpected error occured. No data was retrieved from the request');            
-        }
-
-        return data
+    if (data.code === 1010) {
+      console.log('Tuya Token is invalid. Attempting to fetch a new token.');
+      await connectTuya();
+    } else if (!data) {
+      throw Error(
+        'An unexpected error occured. No data was retrieved from the request'
+      );
     }
-
-    public async getDevices() 
-    {
-        return this._request(
-            '/v1.2/iot-03/devices',
-            'GET'
-        )
-    }
+    return data;
   }
 
+  public async getDevices() {
+    return this._request('/v1.2/iot-03/devices', 'GET');
+  }
 
-public async getDeviceStatus(id : string)
-    {
-        return this._request(
-            `/v1.0/iot-03/devices/${id}/status`,
-            'GET'
-        )
-    }
+  public async getDeviceStatus(id: string) {
+    return this._request(`/v1.0/iot-03/devices/${id}/status`, 'GET');
+  }
 
-public async getAssetInfo(id : string)
-    {
-        return this._request(
-            `/v1.0/iot-02/assets`,
-            'GET',
-            {
-                'asset_ids': id
-            }
-        )
-    }
+  public async getAssetInfo(id: string) {
+    return this._request('/v1.0/iot-02/assets', 'GET', {
+      asset_ids: id,
+    });
   }
 }
 
