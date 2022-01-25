@@ -1,3 +1,4 @@
+import { groupNotificationsByType } from './services/notification.service';
 import { Sockets } from './models/sockets.model';
 import {connectDB} from './services/db.service';
 import {connectTuya, beginTuyaPoll} from './services/tuya.service';
@@ -52,7 +53,11 @@ Notifications.watch().on('change', async data => {
       resolved: false,
       userId,
     }).exec();
-    // TODO: Emit full notification list to socket(s)
+    const groupedNotifications = groupNotificationsByType(notifications);
+
+    for (const socket of sockets) {
+      io.to(socket.socketId).emit('events', groupedNotifications);
+    }
   }
 });
 
