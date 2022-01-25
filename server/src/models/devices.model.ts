@@ -43,7 +43,7 @@ export const deviceNotificationLib : Record<string, Record<string, Record<string
             { 
                 type: 'critical',
                 title: 'Gas detected',
-                description: 'Your device "%DEVICE_NAME%" has detected gas.'
+                description: 'Your device "%DEVICE_NAME%" has detected gas. Please take immediate action!'
             }
         }
     }
