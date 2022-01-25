@@ -75,7 +75,7 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', async () => {
-    await Sockets.deleteOne({socketId: 'bar'});
+    await Sockets.deleteOne({socketId: socket.id});
     console.log(`Disconnected socket ${socket.id}`);
   });
 });

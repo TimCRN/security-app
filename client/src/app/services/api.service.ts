@@ -15,12 +15,6 @@ export class ApiService {
     info: INotification[];
   } | null = null;
 
-  // $events = new BehaviorSubject<null | {
-  //   critical: INotification[];
-  //   warning: INotification[];
-  //   info: INotification[];
-  // }>(null);
-
   $events = this.socket.fromEvent<{
     critical: INotification[];
     warning: INotification[];
@@ -34,10 +28,10 @@ export class ApiService {
     private afAuth: AngularFireAuth,
     private socket: Socket
   ) {
-    afAuth.authState.subscribe(async (user: unknown) => {
+    afAuth.authState.subscribe(async user => {
       if (!!user) {
         const socketId = await this.connectSocketAndWaitForId();
-        console.log(socketId);
+        this.socket.emit('setSocketId', {userId: user.uid, socketId});
       } else {
         socket.disconnect();
       }
