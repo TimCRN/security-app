@@ -1,6 +1,6 @@
 export interface IClicksendMessage
-{
+{    
     to: string,
-    body: string
-    from: 'SecureDash'
+    body: string,
+    from?: string;
 }
