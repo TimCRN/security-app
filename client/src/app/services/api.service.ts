@@ -2,6 +2,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,19 @@ export class ApiService {
     info: INotification[];
   } | null = null;
 
-  constructor(private http: HttpClient, private afAuth: AngularFireAuth) {}
+  constructor(
+    private http: HttpClient,
+    private afAuth: AngularFireAuth,
+    private socket: Socket
+  ) {
+    afAuth.authState.subscribe((user: unknown) => {
+      if (!!user) {
+        socket.connect();
+      } else {
+        socket.disconnect();
+      }
+    })
+  }
 
   async getEvents() {
     const user = await this.afAuth.currentUser;

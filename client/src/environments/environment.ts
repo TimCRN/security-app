@@ -12,7 +12,8 @@ export const environment = {
     messagingSenderId: '825206742784',
   },
   production: false,
-  vapidPublicKey: 'BHmcB-MSKFLWfOzUI-N93z8RzQaSbIygaSYkJdtfLuGEqWqM7oOlKEHP0jbeWra3wgO_r9buSQOqFkZxV8WvFgc'
+  vapidPublicKey: 'BHmcB-MSKFLWfOzUI-N93z8RzQaSbIygaSYkJdtfLuGEqWqM7oOlKEHP0jbeWra3wgO_r9buSQOqFkZxV8WvFgc',
+  rootEndpoint: 'http://localhost:8080'
 };
 
 /*

@@ -1,3 +1,4 @@
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,6 +20,13 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule } from '@angular/forms';
 import { QuickSigninComponent } from './components/quick-signin/quick-signin.component';
 import { EventModalComponent } from './components/event-modal/event-modal.component';
+
+const socketConfig: SocketIoConfig = {
+  url: environment.rootEndpoint,
+  options: {
+    autoConnect: false
+  }
+}
 
 @NgModule({
   declarations: [
@@ -46,7 +54,8 @@ import { EventModalComponent } from './components/event-modal/event-modal.compon
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     providePerformance(() => getPerformance()),
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(socketConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

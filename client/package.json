@@ -23,6 +23,7 @@
     "@angular/router": "~13.1.0",
     "@angular/service-worker": "~13.1.0",
     "firebase": "^9.6.2",
+    "ngx-socket-io": "^4.1.0",
     "rxfire": "^6.0.0",
     "rxjs": "~7.4.0",
     "timeago.js": "^4.0.2",
