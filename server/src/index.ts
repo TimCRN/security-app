@@ -1,3 +1,4 @@
+import { ISocketMapping } from './../build/models/sockets.model.d';
 import {getGroupedNotifications} from './services/notification.service';
 import {Sockets} from './models/sockets.model';
 import {connectDB} from './services/db.service';
@@ -62,7 +63,7 @@ io.on('connection', socket => {
   console.log(`Connected socket ${socket.id}`);
 
   // Store socket ID with specific user ID
-  socket.on('setSocketId', async (data: {userId: string; socketId: string}) => {
+  socket.on('setSocketId', async (data: ISocketMapping) => {
     try {
       await Sockets.create(data);
     } catch (error) {
