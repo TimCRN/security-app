@@ -149,12 +149,17 @@ async function addDeviceToDB(device: {
   console.log(
     `Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`
   );
+  let assetName = ""
+  try{
+    assetName = (await tuyaAPI.getAssetInfo(device.asset_id)).result[0].asset_full_name
+  }
+  catch{  }
+
   const input: DeviceInput = {
     _id: device.id,
     name: device.name,
     asset_id: device.asset_id,
-    asset_name: (await tuyaAPI.getAssetInfo(device.asset_id)).result[0]
-      .asset_full_name,
+    asset_name: assetName,
     model: device.model,
     category: device.category_name,
     online: device.online,
