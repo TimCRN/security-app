@@ -149,11 +149,13 @@ async function addDeviceToDB(device: {
   console.log(
     `Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`
   );
-  let assetName = ""
-  try{
-    assetName = (await tuyaAPI.getAssetInfo(device.asset_id)).result[0].asset_full_name
+  let assetName;
+  let status;
+  try {
+    assetName = (await tuyaAPI.getAssetInfo(device.asset_id)).result.asset_full_name
+    status = (await tuyaAPI.getDeviceStatus(device.id)).result
   }
-  catch{  }
+  catch{ }
 
   const input: DeviceInput = {
     _id: device.id,
@@ -163,7 +165,7 @@ async function addDeviceToDB(device: {
     model: device.model,
     category: device.category_name,
     online: device.online,
-    status: (await tuyaAPI.getDeviceStatus(device.id)).result,
+    status: status,
   };
   Device.create(input);
   console.log(`Device '${device.name}' has been added!`);
@@ -257,9 +259,7 @@ class TuyaAPI {
   }
 
   public async getAssetInfo(id: string) {
-    return this._request('/v1.0/iot-02/assets', 'GET', {
-      asset_ids: id,
-    });
+    return this._request(`/v1.0/iot-02/assets/${id}`, 'GET');
   }
 }
 
