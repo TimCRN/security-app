@@ -2,9 +2,11 @@ import {IPushSubscription} from './../models/notifications.model';
 import {Notifications, INotification} from '../models/notifications.model';
 import webpush from 'web-push';
 import {IPushSubcriptionItem, IUser, Users} from '../models/user.model';
-import { notificationsRouter } from '../routes/notifications.route';
-import { clicksendAPI } from './clicksend.service';
-import { IClicksendTextMessage, IClicksendVoiceMessage } from '../models/clicksend.model';
+import {clicksendAPI} from './clicksend.service';
+import {
+  IClicksendTextMessage,
+  IClicksendVoiceMessage,
+} from '../models/clicksend.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -88,13 +90,11 @@ const notifyUser = async (
       sendPushNotification(notification, pushSub, notificationId);
     }
 
-    if (notifyThroughSms)
-    {
+    if (notifyThroughSms) {
       sendSms(notification, user);
     }
 
-    if (notifyThroughCall)
-    {
+    if (notifyThroughCall) {
       sendVoiceCall(notification, user);
     }
   } catch (error) {
@@ -108,39 +108,34 @@ const notifyUser = async (
  * @param notification The notification to dispatch
  * @param user The user which will receive the SMS
  */
-const sendSms = (
-  notification: INotification,
-  user: IUser
-) => {
+const sendSms = (notification: INotification, user: IUser) => {
   const message: IClicksendTextMessage = {
     to: user.phoneNumber,
-    body: notification.description != null ?
-      notification.description :
-      `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`
-  }
-  clicksendAPI.sendSms([message])
-}
+    body:
+      notification.description !== null
+        ? String(notification.description)
+        : `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`,
+  };
+  clicksendAPI.sendSms([message]);
+};
 
 /**
  * Send out a voice call to a specified user
  * @param notification The notification to dispatch
  * @param user The user which will receive the SMS
  */
- const sendVoiceCall = (
-  notification: INotification,
-  user: IUser
-) => {
+const sendVoiceCall = (notification: INotification, user: IUser) => {
   const message: IClicksendVoiceMessage = {
     to: user.phoneNumber,
-    body: notification.description != null ?
-      notification.description :
-      `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`,
+    body:
+      notification.description !== null
+        ? String(notification.description)
+        : `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`,
     voice: 'male',
-    lang: 'en-gb'
-  }
-  clicksendAPI.sendCall([message])
-}
-
+    lang: 'en-gb',
+  };
+  clicksendAPI.sendCall([message]);
+};
 
 /**
  * Dispatch a notification to a specific push subscription

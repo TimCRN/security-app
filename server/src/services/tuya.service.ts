@@ -152,10 +152,12 @@ async function addDeviceToDB(device: {
   let assetName;
   let status;
   try {
-    assetName = (await tuyaAPI.getAssetInfo(device.asset_id)).result.asset_full_name
-    status = (await tuyaAPI.getDeviceStatus(device.id)).result
+    assetName = (await tuyaAPI.getAssetInfo(device.asset_id)).result
+      .asset_full_name;
+    status = (await tuyaAPI.getDeviceStatus(device.id)).result;
+  } catch {
+    console.error('An error occured whilst retrieving asset/device info');
   }
-  catch{ }
 
   const input: DeviceInput = {
     _id: device.id,
@@ -207,7 +209,10 @@ async function processChanges(device: DeviceInput) {
             devices: [device._id],
             title: nData.title,
             type: nData.type,
-            description: nData.description?.replace('%DEVICE_NAME%', device.name),
+            description: nData.description?.replace(
+              '%DEVICE_NAME%',
+              device.name
+            ),
             sentNotification: false,
             resolved: false,
           });
