@@ -10,5 +10,6 @@ export interface IClicksendVoiceMessage
     to: string,
     body: string,
     voice: string,
-    country: string
+    country?: string,
+    lang: string
 }
