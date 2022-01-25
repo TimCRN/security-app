@@ -115,7 +115,7 @@ const sendSms = (
   const message: IClicksendTextMessage = {
     to: user.phoneNumber,
     body: notification.description != null ?
-      notification.description.replace('%DEVICE_NAME%', String(notification.devices)) :
+      notification.description :
       `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`
   }
   clicksendAPI.sendSms([message])
@@ -133,7 +133,7 @@ const sendSms = (
   const message: IClicksendVoiceMessage = {
     to: user.phoneNumber,
     body: notification.description != null ?
-      notification.description.replace('%DEVICE_NAME%', String(notification.devices)) :
+      notification.description :
       `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`,
     voice: 'male',
     lang: 'en-gb'
