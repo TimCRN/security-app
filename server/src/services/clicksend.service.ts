@@ -50,7 +50,7 @@ class ClicksendAPI
         })
 
         return !config.dev ? 
-            await this._request('/sms/send', 'POST', {}, {}, { messages : messages }) 
+            await this._request('/sms/send', 'POST', {}, {}, { messages }) 
             : 
             console.log(messages),
             console.log('SMS would have been sent. Set dev mode to false the env to enable this feature.')
@@ -59,7 +59,7 @@ class ClicksendAPI
     public async sendCall(messages: IClicksendVoiceMessage[])
     {
         return !config.dev ?
-            await this._request('/voice/send', 'POST', {}, {}, { messages : messages }) 
+            await this._request('/voice/send', 'POST', {}, {}, { messages }) 
             : 
             console.log(messages),
             console.log('Message would have been called. Set dev mode to false the env to enable this feature.')
