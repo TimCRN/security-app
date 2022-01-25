@@ -5,6 +5,7 @@ export interface IUser {
   _id: string;
   name?: string;
   email: string;
+  phoneNumber: string;
   devices: string[];
   circleOfTrust: [ICircleOfTrustItem[]];
   settings: {
@@ -32,6 +33,7 @@ const userSchema = new mongoose.Schema<IUser>(
     _id: {type: String, required: true},
     name: String,
     email: {type: String, required: true},
+    phoneNumber: {type: String},
     devices: {type: [String], default: []},
     circleOfTrust: [[{name: String, number: String}]],
     settings: {
