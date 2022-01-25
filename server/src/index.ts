@@ -41,7 +41,7 @@ app.use('/users', usersRouter);
 
 console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`);
 
-// Notifications.watch().on('insert', data => console.log(data));
+// TODO: Refactor
 Notifications.watch().on('change', async data => {
   if (data.operationType === 'insert') {
     const notificationDocument = data.fullDocument as INotification;
