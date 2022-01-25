@@ -14,6 +14,8 @@ export interface IUser {
     batteryCriticalThreshold: number;
     maxConsecutiveOfflineStates: number;
     maxOfflineDevicesPercentage: number;
+    notifyThroughSms: boolean;
+    notifyThroughCall: boolean;
   };
   pushSubscriptions: IPushSubcriptionItem[];
 }
@@ -42,6 +44,8 @@ const userSchema = new mongoose.Schema<IUser>(
       batteryCriticalThreshold: {type: Number, default: 10},
       maxConsecutiveOfflineStates: {type: Number, default: 5},
       maxOfflineDevicesPercentage: {type: Number, default: 25},
+      notifyThroughSms: {type: Boolean, default: false},
+      notifyThroughCall: {type: Boolean, default: false},
     },
     pushSubscriptions: {
       type: [
