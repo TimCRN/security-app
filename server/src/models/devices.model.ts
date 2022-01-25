@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import { INotification } from "./notifications.model";
+import { INotification, severity } from "./notifications.model";
 
 export type DeviceDocument = mongoose.Document & {
     _id: string;
@@ -30,13 +30,13 @@ export type deviceStatus = {
     value: string
 }
 
-type simpleNotificationData = {
-    type: 'critical' | 'warning' | 'info',
+interface ISimpleNotificationData {
+    type: severity,
     title: string,
     description?: string
 }
 
-export const deviceNotificationLib : Record<string, Record<string, Record<string, simpleNotificationData>>> = {
+export const deviceNotificationLib : Record<string, Record<string, Record<string, ISimpleNotificationData>>> = {
     'Gas Detector': 
     { 
         '0' : // Gas Sensor State
@@ -50,7 +50,7 @@ export const deviceNotificationLib : Record<string, Record<string, Record<string
     }
 }
 
-export const deviceNotificationLib2 : Record<string, Record<string, Record<string, simpleNotificationData>>> = {
+export const deviceNotificationLib2 : Record<string, Record<string, Record<string, ISimpleNotificationData>>> = {
     'rqbj': // Gas Detector 
     { 
         'gas_sensor_state' :
