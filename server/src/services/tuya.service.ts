@@ -204,6 +204,7 @@ async function processChanges(device: DeviceInput) {
           );
           await createNotification({
             userId: user._id,
+            devices: [device.name],
             title: nData.title,
             type: nData.type,
             description: nData.description,
