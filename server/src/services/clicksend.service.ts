@@ -1,5 +1,5 @@
 import axios, { Method } from "axios";
-import { IClicksendMessage } from "../models/clicksend.model";
+import { IClicksendTextMessage, IClicksendVoiceMessage } from "../models/clicksend.model";
 
 
 // Load environment variables in non-production environment
@@ -43,7 +43,7 @@ class ClicksendAPI
         return data;
     }
 
-    public async sendSms(messages: IClicksendMessage[])
+    public async sendSms(messages: IClicksendTextMessage[])
     {
         const msg = messages.forEach(e => {
             e.from == null ? e.from = config.senderName : null
@@ -54,6 +54,15 @@ class ClicksendAPI
             : 
             console.log(messages),
             console.log('SMS would have been sent. Set dev mode to false the env to enable this feature.')
+    }
+
+    public async sendCall(messages: IClicksendVoiceMessage[])
+    {
+        return !config.dev ?
+            await this._request('/voice/send', 'POST', {}, {}, { messages : messages }) 
+            : 
+            console.log(messages),
+            console.log('Message would have been called. Set dev mode to false the env to enable this feature.')
     }
 
 }
