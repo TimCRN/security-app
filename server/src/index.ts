@@ -41,11 +41,17 @@ app.use('/users', usersRouter);
 console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`);
 
 // Notifications.watch().on('insert', data => console.log(data));
-Notifications.watch().on('change', data => {
+Notifications.watch().on('change', async data => {
   if (data.operationType === 'insert') {
     const notificationDocument = data.fullDocument as INotification;
     const userId = notificationDocument.userId;
-    // TODO: Get active sockets for userID
+    const sockets = await Sockets.find({userId}).exec();
+    if (sockets.length === 0) return;
+
+    const notifications = await Notifications.find({
+      resolved: false,
+      userId,
+    }).exec();
     // TODO: Emit full notification list to socket(s)
   }
 });
