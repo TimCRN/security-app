@@ -11,7 +11,7 @@ const config = {
     host: String(process.env.CLICKSEND_HOST),
     user: String(process.env.CLICKSEND_USER),
     pass: String(process.env.CLICKSEND_PASS),
-    dev: Boolean(process.env.CLICKSEND_DEV),
+    dev:  JSON.parse(String(process.env.CLICKSEND_DEV)),
     senderName: String(process.env.CLICKSEND_SENDER_NAME)
 };
 
@@ -32,15 +32,22 @@ class ClicksendAPI
     {
         const _headers = Object.assign({}, reqHeaders, headers)
 
-        const { data } = await httpClient.request({
-            method,
-            data: reqData,
-            params: query,
-            headers: reqHeaders,
-            url: call,
-        });
+        try
+        {
+            const { data } = await httpClient.request({
+                method,
+                data: reqData,
+                params: query,
+                headers: reqHeaders,
+                url: call,
+            });
 
-        return data;
+            return data;
+        }
+        catch
+        {
+            console.error('Clicksend api request failed')
+        }        
     }
 
     public async sendSms(messages: IClicksendTextMessage[])
@@ -49,20 +56,32 @@ class ClicksendAPI
             e.from == null ? e.from = config.senderName : null
         })
 
-        return !config.dev ? 
-            await this._request('/sms/send', 'POST', {}, {}, { messages }) 
-            : 
+        if (!config.dev)
+        {
+            await this._request('/sms/send', 'POST', {}, {}, { messages })
+            console.log('SMS has been sent!')
+        }
+        else
+        {
             console.log(messages),
             console.log('SMS would have been sent. Set dev mode to false the env to enable this feature.')
+        }
+            
     }
 
     public async sendCall(messages: IClicksendVoiceMessage[])
     {
-        return !config.dev ?
-            await this._request('/voice/send', 'POST', {}, {}, { messages }) 
-            : 
+        if (!config.dev) 
+        {
+            await this._request('/voice/send', 'POST', {}, {}, { messages })
+            console.log('Voice call has been sent!')
+        }
+        else
+        {
             console.log(messages),
             console.log('Message would have been called. Set dev mode to false the env to enable this feature.')
+        }
+            
     }
 
 }
