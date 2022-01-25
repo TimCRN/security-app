@@ -7,6 +7,7 @@ import {devicesRouter} from './routes/devices.route';
 import cors from 'cors';
 import {notificationsRouter} from './routes/notifications.route';
 import {usersRouter} from './routes/users.route';
+import {INotification, Notifications} from './models/notifications.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -38,9 +39,30 @@ app.use('/users', usersRouter);
 
 console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`);
 
+// Notifications.watch().on('insert', data => console.log(data));
+Notifications.watch().on('change', data => {
+  if (data.operationType === 'insert') {
+    const notificationDocument = data.fullDocument as INotification;
+    const userId = notificationDocument.userId;
+    // TODO: Get active sockets for userID
+    // TODO: Emit full notification list to socket(s)
+  }
+});
+
+// Establish WebSocket listener
 io.on('connection', socket => {
-  console.log('Connection established');
-  socket.on('disconnect', () => console.log('Disconnected'));
+  console.log(`Connected socket ${socket.id}`);
+
+  // Store socket ID with specific user ID
+  socket.on('setSocketId', (data: {userId: string; socketId: string}) => {
+    // TODO: Add socket to MongoDB with userID
+    console.log(data);
+  });
+
+  socket.on('disconnect', () => {
+    // TODO: Remove socket from MongoDB
+    console.log(`Disconnected socket ${socket.id}`);
+  });
 });
 
 http.listen(PORT, () => {
