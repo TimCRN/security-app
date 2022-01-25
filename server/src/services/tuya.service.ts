@@ -207,7 +207,7 @@ async function processChanges(device: DeviceInput) {
             devices: [device.name],
             title: nData.title,
             type: nData.type,
-            description: nData.description,
+            description: nData.description?.replace('%DEVICE_NAME%', device.name),
             sentNotification: false,
             resolved: false,
           });
