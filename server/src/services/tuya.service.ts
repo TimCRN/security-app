@@ -174,6 +174,13 @@ async function processChanges(device: DeviceInput) {
   let changes = false;
   const changedIndexes: number[] = [];
 
+  // ! status.result is sometimes undefined and crashes the application
+  if (status.result === undefined) {
+    console.error(status);
+    console.error('Failed to get device status');
+    return;
+  }
+
   for (let index = 0; index < status.result.length; index++) {
     const element = status.result[index].value;
     if (device.status[index].value !== element) {
