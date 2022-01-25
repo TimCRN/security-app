@@ -1,7 +1,10 @@
 import {IPushSubscription} from './../models/notifications.model';
 import {Notifications, INotification} from '../models/notifications.model';
 import webpush from 'web-push';
-import {IPushSubcriptionItem, Users} from '../models/user.model';
+import {IPushSubcriptionItem, IUser, Users} from '../models/user.model';
+import { notificationsRouter } from '../routes/notifications.route';
+import { clicksendAPI } from './clicksend.service';
+import { IClicksendMessage } from '../models/clicksend.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -82,11 +85,26 @@ const notifyUser = async (
     for (const pushSub of subscriptions) {
       sendPushNotification(notification, pushSub, notificationId);
     }
+    
+    sendSms(notification, user);
   } catch (error) {
     console.error(error);
   }
   // ? What to do if no push subscriptions were ever registered by the user?
 };
+
+const sendSms = (
+  notification: INotification,
+  user: IUser
+) => {
+  const message: IClicksendMessage = {
+    to: user.phoneNumber,
+    body: notification.description != null ?
+      notification.description :
+      `${notification.type}: your device(s) "${notification.devices}" have reported a state change. Please check this out immediately.`
+  }
+  clicksendAPI.sendSms([message])
+}
 
 /**
  * Dispatch a notification to a specific push subscription
