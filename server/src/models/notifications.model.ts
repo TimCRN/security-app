@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 import {ICircleOfTrustItem} from './user.model';
 
+export type severity = 'critical' | 'warning' | 'info';
+
 export interface INotification {
   userId: string;
-  type: 'critical' | 'warning' | 'info';
+  type: severity;
   title: string;
   description?: string;
   devices?: string[];
