@@ -4,6 +4,7 @@ import { default as axios, Method } from 'axios';
 import { Device, DeviceInput, deviceNotificationLib } from '../models/devices.model';
 import { Users } from '../models/user.model';
 import { createNotification } from './notification.service';
+import { ITuyaDevice } from '../models/tuya.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -130,7 +131,7 @@ export const beginTuyaPoll = async() => {
     }
 }
 
-async function addDeviceToDB(device: { id: string; name: any; asset_id: string; model: any; category_name: any; online: any; })
+async function addDeviceToDB(device: ITuyaDevice)
 {
     console.log(`Device '${device.id}' is not present in the Database.\nAdding it to the database now ...`)
     const input : DeviceInput = {
@@ -139,7 +140,8 @@ async function addDeviceToDB(device: { id: string; name: any; asset_id: string; 
         asset_id: device.asset_id,
         asset_name: (await tuyaAPI.getAssetInfo(device.asset_id)).result[0].asset_full_name,
         model : device.model,
-        category : device.category_name,
+        category : device.category,
+        category_name: device.category_name,
         online : device.online,
         status : (await tuyaAPI.getDeviceStatus(device.id)).result
     }
@@ -172,7 +174,8 @@ async function processChanges(device : DeviceInput)
         changedIndexes.forEach(async e => {
             try
             {
-                let nData = deviceNotificationLib[device.category][e][status.result[e].value]
+                const stateCode = device.status[e].code
+                let nData = deviceNotificationLib[device.category][stateCode][status.result[e].value]
                 if(user && nData)
                 {            
                     console.log('Notification linked to change found. Creating push notification')
@@ -207,7 +210,7 @@ class TuyaAPI {
             headers: reqHeaders,
             url: reqHeaders.path,
         });
-         
+
         if (data.code == 1010) {
             console.log('Tuya Token is invalid. Attempting to fetch a new token.')
             await connectTuya();
