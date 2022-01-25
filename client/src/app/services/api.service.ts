@@ -21,8 +21,6 @@ export class ApiService {
     info: INotification[];
   }>('events');
 
-  activeSocketId: string | null = null;
-
   constructor(
     private http: HttpClient,
     private afAuth: AngularFireAuth,

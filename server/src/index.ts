@@ -1,5 +1,5 @@
-import { groupNotificationsByType } from './services/notification.service';
-import { Sockets } from './models/sockets.model';
+import {getGroupedNotifications} from './services/notification.service';
+import {Sockets} from './models/sockets.model';
 import {connectDB} from './services/db.service';
 import {connectTuya, beginTuyaPoll} from './services/tuya.service';
 import express, {Request, Response} from 'express';
@@ -49,14 +49,10 @@ Notifications.watch().on('change', async data => {
     const sockets = await Sockets.find({userId}).exec();
     if (sockets.length === 0) return;
 
-    const notifications = await Notifications.find({
-      resolved: false,
-      userId,
-    }).exec();
-    const groupedNotifications = groupNotificationsByType(notifications);
+    const notifications = await getGroupedNotifications(userId);
 
     for (const socket of sockets) {
-      io.to(socket.socketId).emit('events', groupedNotifications);
+      io.to(socket.socketId).emit('events', notifications);
     }
   }
 });

@@ -1,4 +1,7 @@
-import {IPushSubscription} from './../models/notifications.model';
+import {
+  IGroupedNotifications,
+  IPushSubscription,
+} from './../models/notifications.model';
 import {Notifications, INotification} from '../models/notifications.model';
 import webpush from 'web-push';
 import {IPushSubcriptionItem, Users} from '../models/user.model';
@@ -14,6 +17,27 @@ webpush.setVapidDetails(
   process.env.VAPID_PUBLIC!,
   process.env.VAPID_PRIVATE!
 );
+
+/**
+ * Retrieve all unresolved notifications for a user, grouped by notification type
+ * @param userId user ID to retrieve notifications for
+ * @returns Object with notification array per type
+ */
+export const getGroupedNotifications = async (
+  userId: string
+): Promise<IGroupedNotifications> => {
+  try {
+    const notifications = await Notifications.find({
+      resolved: false,
+      userId,
+    }).exec();
+    const grouped = groupNotificationsByType(notifications);
+    return grouped;
+  } catch (error) {
+    console.error((error as Error).message);
+    throw error;
+  }
+};
 
 /**
  * Group notifications by type
@@ -48,7 +72,6 @@ export const createNotification = async (notification: INotification) => {
   await notifyUser(notification, docId);
   doc.sentNotification = true;
   await doc.save();
-  // TODO: Implement further push logic
 };
 
 /**

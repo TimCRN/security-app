@@ -21,6 +21,12 @@ export interface IPushSubscription {
   };
 }
 
+export interface IGroupedNotifications {
+  critical: INotification[];
+  warning: INotification[];
+  info: INotification[];
+}
+
 interface ICircleOfTrustNotificationItem extends ICircleOfTrustItem {
   contacted: boolean;
 }
