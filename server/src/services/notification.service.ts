@@ -4,7 +4,7 @@ import webpush from 'web-push';
 import {IPushSubcriptionItem, IUser, Users} from '../models/user.model';
 import { notificationsRouter } from '../routes/notifications.route';
 import { clicksendAPI } from './clicksend.service';
-import { IClicksendTextMessage } from '../models/clicksend.model';
+import { IClicksendTextMessage, IClicksendVoiceMessage } from '../models/clicksend.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -75,6 +75,8 @@ const notifyUser = async (
       (item: IPushSubcriptionItem) => item.sub
     );
     const notifyFromTypePref = user.settings.notifyFromType;
+    const notifyThroughSms = user.settings.notifyThroughSms;
+    const notifyThroughCall = user.settings.notifyThroughCall;
 
     if (notifyFromTypePref === 'critical' && notification.type !== 'critical')
       return;
@@ -85,14 +87,27 @@ const notifyUser = async (
     for (const pushSub of subscriptions) {
       sendPushNotification(notification, pushSub, notificationId);
     }
-    
-    sendSms(notification, user);
+
+    if (notifyThroughSms)
+    {
+      sendSms(notification, user);
+    }
+
+    if (notifyThroughCall)
+    {
+      sendVoiceCall(notification, user);
+    }
   } catch (error) {
     console.error(error);
   }
   // ? What to do if no push subscriptions were ever registered by the user?
 };
 
+/**
+ * Send out an SMS to a specified user
+ * @param notification The notification to dispatch
+ * @param user The user which will receive the SMS
+ */
 const sendSms = (
   notification: INotification,
   user: IUser
@@ -100,11 +115,32 @@ const sendSms = (
   const message: IClicksendTextMessage = {
     to: user.phoneNumber,
     body: notification.description != null ?
-      notification.description :
-      `${notification.type}: your device(s) "${notification.devices}" have reported a state change. Please check this out immediately.`
+      notification.description.replace('%DEVICE_NAME%', String(notification.devices)) :
+      `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`
   }
   clicksendAPI.sendSms([message])
 }
+
+/**
+ * Send out a voice call to a specified user
+ * @param notification The notification to dispatch
+ * @param user The user which will receive the SMS
+ */
+ const sendVoiceCall = (
+  notification: INotification,
+  user: IUser
+) => {
+  const message: IClicksendVoiceMessage = {
+    to: user.phoneNumber,
+    body: notification.description != null ?
+      notification.description.replace('%DEVICE_NAME%', String(notification.devices)) :
+      `${notification.type}: your device(s) "${notification.devices}" have reported one or multiple state changes. Please check this out immediately.`,
+    voice: 'male',
+    lang: 'en-gb'
+  }
+  clicksendAPI.sendCall([message])
+}
+
 
 /**
  * Dispatch a notification to a specific push subscription
