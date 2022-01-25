@@ -1,3 +1,4 @@
+import { Sockets } from './models/sockets.model';
 import {connectDB} from './services/db.service';
 import {connectTuya, beginTuyaPoll} from './services/tuya.service';
 import express, {Request, Response} from 'express';
@@ -54,9 +55,12 @@ io.on('connection', socket => {
   console.log(`Connected socket ${socket.id}`);
 
   // Store socket ID with specific user ID
-  socket.on('setSocketId', (data: {userId: string; socketId: string}) => {
-    // TODO: Add socket to MongoDB with userID
-    console.log(data);
+  socket.on('setSocketId', async (data: {userId: string; socketId: string}) => {
+    try {
+      await Sockets.create(data);
+    } catch (error) {
+      console.error((error as Error).message);
+    }
   });
 
   socket.on('disconnect', () => {
