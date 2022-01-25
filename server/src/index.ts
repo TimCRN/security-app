@@ -63,8 +63,8 @@ io.on('connection', socket => {
     }
   });
 
-  socket.on('disconnect', () => {
-    // TODO: Remove socket from MongoDB
+  socket.on('disconnect', async () => {
+    await Sockets.deleteOne({socketId: 'bar'});
     console.log(`Disconnected socket ${socket.id}`);
   });
 });
