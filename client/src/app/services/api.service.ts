@@ -1,7 +1,7 @@
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, BehaviorSubject } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 
 @Injectable({
@@ -14,6 +14,18 @@ export class ApiService {
     warning: INotification[];
     info: INotification[];
   } | null = null;
+
+  // $events = new BehaviorSubject<null | {
+  //   critical: INotification[];
+  //   warning: INotification[];
+  //   info: INotification[];
+  // }>(null);
+
+  $events = this.socket.fromEvent<{
+    critical: INotification[];
+    warning: INotification[];
+    info: INotification[];
+  }>('events');
 
   constructor(
     private http: HttpClient,

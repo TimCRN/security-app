@@ -38,7 +38,9 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private api: ApiService,
     private swPush: SwPush
-  ) { }
+  ) {
+    this.api.$events.subscribe(console.log);
+  }
 
   async ngOnInit(): Promise<void> {
     const d = new Date();
