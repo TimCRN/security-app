@@ -4,7 +4,7 @@ import webpush from 'web-push';
 import {IPushSubcriptionItem, IUser, Users} from '../models/user.model';
 import { notificationsRouter } from '../routes/notifications.route';
 import { clicksendAPI } from './clicksend.service';
-import { IClicksendMessage } from '../models/clicksend.model';
+import { IClicksendTextMessage } from '../models/clicksend.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -97,7 +97,7 @@ const sendSms = (
   notification: INotification,
   user: IUser
 ) => {
-  const message: IClicksendMessage = {
+  const message: IClicksendTextMessage = {
     to: user.phoneNumber,
     body: notification.description != null ?
       notification.description :
