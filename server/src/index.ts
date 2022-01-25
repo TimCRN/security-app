@@ -1,4 +1,3 @@
-import { ISocketMapping } from './../build/models/sockets.model.d';
 import {getGroupedNotifications} from './services/notification.service';
 import {Sockets} from './models/sockets.model';
 import {connectDB} from './services/db.service';
@@ -11,6 +10,7 @@ import cors from 'cors';
 import {notificationsRouter} from './routes/notifications.route';
 import {usersRouter} from './routes/users.route';
 import {INotification, Notifications} from './models/notifications.model';
+import {ISocketMapping} from './models/sockets.model';
 
 // Load environment variables in non-production environment
 if (process.env.ENV !== 'prod') {
@@ -69,6 +69,12 @@ io.on('connection', socket => {
     } catch (error) {
       console.error((error as Error).message);
     }
+  });
+
+  socket.on('getEvents', async () => {
+    // TODO: Get user ID from MongoDB with socket ID
+    // TODO: Get events
+    // TODO: Emit events
   });
 
   socket.on('disconnect', async () => {
