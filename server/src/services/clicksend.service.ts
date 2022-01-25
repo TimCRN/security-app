@@ -1,4 +1,5 @@
 import axios, { Method } from "axios";
+import { IClicksendMessage } from "../models/clicksend.model";
 
 
 // Load environment variables in non-production environment
@@ -9,7 +10,9 @@ if (process.env.ENV !== 'prod') {
 const config = {
     host: String(process.env.CLICKSEND_HOST),
     user: String(process.env.CLICKSEND_USER),
-    pass: String(process.env.CLICKSEND_PASS)
+    pass: String(process.env.CLICKSEND_PASS),
+    dev: Boolean(process.env.CLICKSEND_DEV),
+    senderName: String(process.env.CLICKSEND_SENDER_NAME)
 };
 
 const basicAuth = Buffer.from(`${config.user}:${config.pass}`).toString('base64');
@@ -40,9 +43,17 @@ class ClicksendAPI
         return data;
     }
 
-    public async getAccountDetails()
+    public async sendSms(messages: IClicksendMessage[])
     {
-        return await this._request('/account', 'GET');
+        const msg = messages.forEach(e => {
+            e.from == null ? e.from = config.senderName : null
+        })
+
+        return !config.dev ? 
+            await this._request('/sms/send', 'POST', {}, {}, { messages : messages }) 
+            : 
+            console.log(messages),
+            console.log('SMS would have been sent. Set dev mode to false the env to enable this feature.')
     }
 
 }
