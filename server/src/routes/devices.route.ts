@@ -1,10 +1,10 @@
-import { Router } from "express";
-import { DeviceController } from "../controllers/device.controller";
+import {Router} from 'express';
+import {DeviceController} from '../controllers/device.controller';
 
-const controller = new DeviceController;
-export const devicesRouter = Router()
+const controller = new DeviceController();
+export const devicesRouter = Router();
 
-devicesRouter.get('/', controller.getAllDevices)
+devicesRouter.get('/', controller.getAllDevices);
 
 // devicesRouter.get('/:id', controller.getDevice)
 
@@ -14,7 +14,6 @@ devicesRouter.get('/', controller.getAllDevices)
 
 // devicesRouter.delete('/:id', controller.deleteDevice)
 
-devicesRouter.get('/tuya', controller.tuyaInfo)
+devicesRouter.get('/tuya', controller.tuyaInfo);
 
-devicesRouter.get('/tuya/:id', controller.tuyaDeviceInfo)
-
+devicesRouter.get('/tuya/:id', controller.tuyaDeviceInfo);

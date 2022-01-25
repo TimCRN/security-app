@@ -5,6 +5,7 @@ export interface IUser {
   _id: string;
   name?: string;
   email: string;
+  phoneNumber: string;
   devices: string[];
   circleOfTrust: [ICircleOfTrustItem[]];
   settings: {
@@ -13,6 +14,8 @@ export interface IUser {
     batteryCriticalThreshold: number;
     maxConsecutiveOfflineStates: number;
     maxOfflineDevicesPercentage: number;
+    notifyThroughSms: boolean;
+    notifyThroughCall: boolean;
   };
   pushSubscriptions: IPushSubcriptionItem[];
 }
@@ -32,6 +35,7 @@ const userSchema = new mongoose.Schema<IUser>(
     _id: {type: String, required: true},
     name: String,
     email: {type: String, required: true},
+    phoneNumber: {type: String},
     devices: {type: [String], default: []},
     circleOfTrust: [[{name: String, number: String}]],
     settings: {
@@ -40,6 +44,8 @@ const userSchema = new mongoose.Schema<IUser>(
       batteryCriticalThreshold: {type: Number, default: 10},
       maxConsecutiveOfflineStates: {type: Number, default: 5},
       maxOfflineDevicesPercentage: {type: Number, default: 25},
+      notifyThroughSms: {type: Boolean, default: false},
+      notifyThroughCall: {type: Boolean, default: false},
     },
     pushSubscriptions: {
       type: [
