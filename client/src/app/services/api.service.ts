@@ -19,6 +19,7 @@ export class ApiService {
     critical: INotification[];
     warning: INotification[];
     info: INotification[];
+    total: number;
   }>('events');
 
   constructor(
