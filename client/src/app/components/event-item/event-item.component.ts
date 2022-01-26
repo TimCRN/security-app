@@ -1,3 +1,4 @@
+import { ApiService } from './../../services/api.service';
 import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -18,7 +19,8 @@ export class EventItemComponent implements OnInit {
 
   constructor(
     private notifications: NotificationsService,
-    private router: Router
+    private router: Router,
+    private api: ApiService
   ) { }
 
   ngOnInit(): void { }
@@ -33,6 +35,10 @@ export class EventItemComponent implements OnInit {
 
   formatDate(timestamp: string) {
     return format(timestamp, 'en_US');
+  }
+
+  async onResolve() {
+    this.api.resolveEvent(this.event._id);
   }
 
 }
