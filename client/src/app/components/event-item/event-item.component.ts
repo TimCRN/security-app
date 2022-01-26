@@ -24,7 +24,6 @@ export class EventItemComponent implements OnInit {
   ngOnInit(): void { }
 
   onRequestPermission() {
-    console.log('Enabling notifications...')
     this.notifications.subscribeToNotifications();
   }
 

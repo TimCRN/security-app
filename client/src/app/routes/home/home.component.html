@@ -6,12 +6,12 @@
       <h1>Event Overview</h1>
     </div>
 
-    <p *ngIf="((events$ | async)?.total === 0 || !(events$ | async)) && notificationsEnabled">You're all caught up!</p>
+    <p *ngIf="((events$ | async)?.total === 0 || !(events$ | async)) && (notificationsEnabled$ | async)">You're all caught up!</p>
     <div id="event-list">
       <app-event-item *ngFor="let event of (events$ | async)?.critical; trackBy:trackById" [event]="event" [pauseAnimation]="showModal"></app-event-item>
       <app-event-item *ngFor="let event of (events$ | async)?.warning; trackBy:trackById" [event]="event"></app-event-item>
       <app-event-item *ngFor="let event of (events$ | async)?.info; trackBy:trackById" [event]="event"></app-event-item>
-      <app-event-item *ngIf="!notificationsEnabled" [event]="enableNotificationsEvent" [isNotificationPermissionEvent]="true"></app-event-item>
+      <app-event-item *ngIf="!(notificationsEnabled$ | async)" [event]="enableNotificationsEvent" [isNotificationPermissionEvent]="true"></app-event-item>
     </div>
   </div>
 

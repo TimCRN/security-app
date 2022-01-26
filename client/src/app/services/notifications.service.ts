@@ -17,6 +17,14 @@ export class NotificationsService {
     private api: ApiService,
     private router: Router
     ) {
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        this.enabled$.next(true);
+      } else {
+        this.enabled$.next(false);
+      }
+    }
+
     if (swPush.isEnabled) {
       swPush.notificationClicks.subscribe(
         (raw: {
@@ -51,9 +59,10 @@ export class NotificationsService {
       .requestSubscription({
         serverPublicKey: environment.vapidPublicKey,
       })
-      .then((sub: PushSubscription) =>
+      .then((sub: PushSubscription) => {
+        this.enabled$.next(true);
         this.registerNotificationSubscription(sub)
-      )
+      })
       .catch((error: Error) =>
         console.error('Failed to subscribe to notifications', error)
       );

@@ -75,7 +75,6 @@ export class ApiService {
     const res = await firstValueFrom(
       this.http.post(endpoint, {name: null, sub})
     )
-    console.log(res);
   }
 
   /**

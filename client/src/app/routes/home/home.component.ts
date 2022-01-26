@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   }
 
   events$ = this.api.events$;
+  notificationsEnabled$ = this.notifications.enabled$;
 
   constructor(
     private notifications: NotificationsService,
@@ -47,16 +48,6 @@ export class HomeComponent implements OnInit {
         this.prepareModal({eventId: segments[1].toString()});
       }
     });
-
-    // TODO: Make behaviorSubject
-    if ('Notification' in window) {
-      if (Notification.permission === 'granted') {
-        this.notificationsEnabled = true;
-      } else {
-        this.notificationsEnabled = false;
-      }
-    }
-
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {
