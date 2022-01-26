@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {Notifications} from '../models/notifications.model';
-import {groupNotificationsByType} from '../services/notification.service';
+import {getGroupedNotifications} from '../services/notification.service';
 
 export class NotificationController {
   /** Retrieve all non-resolved notifications for a user */
@@ -14,15 +14,10 @@ export class NotificationController {
       });
     }
 
-    const notifications = await Notifications.find({
-      resolved: false,
-      userId,
-    }).exec();
-
-    const grouped = groupNotificationsByType(notifications);
+    const notifications = await getGroupedNotifications(userId);
     return res.json({
       success: true,
-      notifications: grouped,
+      notifications,
     });
   }
 

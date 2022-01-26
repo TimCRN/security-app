@@ -33,12 +33,19 @@ export class HomeComponent implements OnInit {
     updatedAt: ''
   }
 
+  events$ = this.api.events$;
+
   constructor(
     private notifications: NotificationsService,
     private route: ActivatedRoute,
     private api: ApiService,
     private swPush: SwPush
-  ) { }
+  ) {}
+
+  /** Helper function to track ngFor components by the notification ID */
+  trackById(index: number, notification: INotification) {
+    return notification._id;
+  }
 
   async ngOnInit(): Promise<void> {
     const d = new Date();

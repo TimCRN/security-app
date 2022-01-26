@@ -1,7 +1,8 @@
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, BehaviorSubject } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,27 @@ export class ApiService {
     info: INotification[];
   } | null = null;
 
-  constructor(private http: HttpClient, private afAuth: AngularFireAuth) {}
+  events$ = this.socket.fromEvent<{
+    critical: INotification[];
+    warning: INotification[];
+    info: INotification[];
+    total: number;
+  }>('events');
+
+  constructor(
+    private http: HttpClient,
+    private afAuth: AngularFireAuth,
+    private socket: Socket
+  ) {
+    afAuth.authState.subscribe(async user => {
+      if (!!user) {
+        const socketId = await this.connectSocketAndWaitForId();
+        this.socket.emit('setSocketId', {userId: user.uid, socketId});
+      } else {
+        socket.disconnect();
+      }
+    })
+  }
 
   async getEvents() {
     const user = await this.afAuth.currentUser;
@@ -55,6 +76,34 @@ export class ApiService {
       this.http.post(endpoint, {name: null, sub})
     )
     console.log(res);
+  }
+
+  /**
+   * Create a new WebSocket connection and wait until the connection ID is defined
+   *
+   * ! This function sucks
+   * ! sockket.connect is not async, meaning the connection variable can be read before it is defined
+   * ! (Possibly) infinite loop to check for ID definition should be fixed!
+   *
+   * @returns the connection ID
+   */
+  private async connectSocketAndWaitForId(): Promise<string> {
+    const connection = this.socket.connect();
+
+    while (connection.id === undefined) {
+      await this.sleep(100);
+    }
+
+    return connection.id;
+  }
+
+  /**
+   * Timeout for specific amount of time
+   * @param duration duration of timeout in ms
+   * @returns a promise that resolves at the end of the set duration
+   */
+  private sleep(duration: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, duration));
   }
 }
 
