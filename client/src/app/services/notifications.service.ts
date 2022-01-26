@@ -3,11 +3,15 @@ import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationsService {
+
+  enabled$ = new BehaviorSubject(false);
+
   constructor(
     private swPush: SwPush,
     private api: ApiService,
@@ -27,6 +31,7 @@ export class NotificationsService {
         this.api.getEvents();
 
         // TODO: Only show modal when window is in focus
+        // TODO: Replace by hooking into WebSocket feed in api.service
         // Disabled for testing, as DevTools takes away focus from the document
         // if (document.hasFocus()) {
           this.router.navigateByUrl(targetURL);

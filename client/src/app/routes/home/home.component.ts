@@ -14,8 +14,6 @@ import { SwPush } from '@angular/service-worker';
 })
 export class HomeComponent implements OnInit {
 
-  events: {critical: INotification[], warning: INotification[], info: INotification[]} | undefined = undefined;
-  time!: string;
   isChildRoute = false;
   modalEvent: INotification | null = null;
   showModal = false;
@@ -42,17 +40,7 @@ export class HomeComponent implements OnInit {
     private swPush: SwPush
   ) {}
 
-  /** Helper function to track ngFor components by the notification ID */
-  trackById(index: number, notification: INotification) {
-    return notification._id;
-  }
-
   async ngOnInit(): Promise<void> {
-    const d = new Date();
-    const hours = `0${d.getHours()}`.slice(-2);
-    const minutes = `0${d.getMinutes()}`.slice(-2);
-    this.time = `${hours}:${minutes}`
-
     // Show event modal if user navigated to a specific event
     this.route.url.pipe(first()).subscribe((segments: UrlSegment[]) => {
       if (segments.length === 2) {
@@ -60,16 +48,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    // this.route.params.subscribe(x => console.log(x))
-
-    // this.events = await this.api.getEvents();
-    const cachedEvents = this.api.events;
-    if (cachedEvents === null) {
-      this.events = await this.api.getEvents();
-    } else {
-      this.events = cachedEvents;
-    }
-
+    // TODO: Make behaviorSubject
     if ('Notification' in window) {
       if (Notification.permission === 'granted') {
         this.notificationsEnabled = true;
@@ -78,10 +57,6 @@ export class HomeComponent implements OnInit {
       }
     }
 
-    // TODO: Replace with behaviorSubject in service
-    this.swPush.messages.subscribe(async (message: any) => {
-      this.events = await this.api.getEvents();
-    })
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {
@@ -93,6 +68,11 @@ export class HomeComponent implements OnInit {
       this.modalEvent = eventRes;
     }
     this.showModal = true;
+  }
+
+  /** Helper function to track ngFor components by the notification ID */
+  trackById(index: number, notification: INotification) {
+    return notification._id;
   }
 
 }
