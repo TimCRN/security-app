@@ -32,7 +32,10 @@ export const getGroupedNotifications = async (
       userId,
     }).sort({createdAt: -1});
     const grouped = groupNotificationsByType(notifications);
-    return grouped;
+    return {
+      ...grouped,
+      total: notifications.length,
+    };
   } catch (error) {
     console.error((error as Error).message);
     throw error;

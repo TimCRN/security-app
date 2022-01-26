@@ -25,6 +25,8 @@ export interface IGroupedNotifications {
   critical: INotification[];
   warning: INotification[];
   info: INotification[];
+  total: number;
+  new?: INotification[];
 }
 
 interface ICircleOfTrustNotificationItem extends ICircleOfTrustItem {
