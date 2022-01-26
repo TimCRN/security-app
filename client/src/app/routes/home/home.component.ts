@@ -42,6 +42,11 @@ export class HomeComponent implements OnInit {
     private swPush: SwPush
   ) {}
 
+  /** Helper function to track ngFor components by the notification ID */
+  trackById(index: number, notification: INotification) {
+    return notification._id;
+  }
+
   async ngOnInit(): Promise<void> {
     const d = new Date();
     const hours = `0${d.getHours()}`.slice(-2);
