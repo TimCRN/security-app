@@ -18,7 +18,7 @@
   </div>
 
   <div class="event-action-wrapper">
-    <button id="event-secondary-action" class="event-action button inverse small" *ngIf="!isNotificationPermissionEvent">Dismiss</button>
+    <button id="event-secondary-action" class="event-action button inverse small" *ngIf="!isNotificationPermissionEvent" (click)="onResolve()">Resolve</button>
     <button (click)="onShowEventModal()" id="event-primary-action" class="event-action button small" *ngIf="!isNotificationPermissionEvent">Show</button>
     <button (click)="onRequestPermission()" id="event-primary-action" class="event-action button small" *ngIf="isNotificationPermissionEvent">Enable</button>
   </div>

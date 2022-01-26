@@ -37,6 +37,8 @@ export class ApiService {
     })
   }
 
+  // ! Deprecated
+  // Superseded by WebSocket feed
   async getEvents() {
     const user = await this.afAuth.currentUser;
     const userId = user?.uid;
@@ -74,6 +76,13 @@ export class ApiService {
     const endpoint = `${this.rootUrl}/users/${userId}/registerPush`;
     const res = await firstValueFrom(
       this.http.post(endpoint, {name: null, sub})
+    )
+  }
+
+  async resolveEvent(eventId: string) {
+    const endpoint = `${this.rootUrl}/notifications/resolve/${eventId}`;
+    const res = await firstValueFrom(
+      this.http.patch(endpoint, {})
     )
   }
 

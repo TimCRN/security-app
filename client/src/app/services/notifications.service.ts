@@ -36,7 +36,6 @@ export class NotificationsService {
         const castEvent = event as PushNotification;
         const eventTargetURL = castEvent.notification.data.onActionClick.default.url;
         const [targetURL,] = eventTargetURL.split('?');
-        this.api.getEvents();
 
         // TODO: Only show modal when window is in focus
         // TODO: Replace by hooking into WebSocket feed in api.service
