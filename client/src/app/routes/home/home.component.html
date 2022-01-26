@@ -7,12 +7,13 @@
       <!-- <span>Last updated: {{ time }}</span> -->
     </div>
 
-    <p *ngIf="notificationsEnabled && (!events || (events.critical === undefined && events.warning === undefined && events.info === undefined))">You're all caught up!</p>
+    <!-- <p *ngIf="
+      (events$ | async) && (events$ | async).critical
+    ">You're all caught up!</p> -->
     <div id="event-list">
-      <app-event-item *ngFor="let event of events?.critical" [event]="event" [pauseAnimation]="showModal"></app-event-item>
-      <app-event-item *ngFor="let event of events?.warning" [event]="event"></app-event-item>
-      <app-event-item *ngFor="let event of events?.info" [event]="event"></app-event-item>
-      <app-event-item *ngFor="let event of events?.info" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of (events$ | async)?.critical" [event]="event" [pauseAnimation]="showModal"></app-event-item>
+      <app-event-item *ngFor="let event of (events$ | async)?.warning" [event]="event"></app-event-item>
+      <app-event-item *ngFor="let event of (events$ | async)?.info" [event]="event"></app-event-item>
       <app-event-item *ngIf="!notificationsEnabled" [event]="enableNotificationsEvent" [isNotificationPermissionEvent]="true"></app-event-item>
     </div>
   </div>

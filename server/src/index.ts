@@ -44,17 +44,23 @@ console.log(`🕑 Tuya poll rate has been set to ${process.env.TUYA_POLL_RATE}`)
 
 // TODO: Refactor
 Notifications.watch().on('change', async data => {
+  let notificationDocument: INotification;
   if (data.operationType === 'insert') {
-    const notificationDocument = data.fullDocument as INotification;
-    const userId = notificationDocument.userId;
-    const sockets = await Sockets.find({userId}).exec();
-    if (sockets.length === 0) return;
+    notificationDocument = data.fullDocument as INotification;
+  } else if (data.operationType === 'update') {
+    const doc = await Notifications.findOne({_id: data.documentKey});
+    notificationDocument = doc as INotification;
+  } else {
+    return;
+  }
+  const userId = notificationDocument!.userId;
+  const sockets = await Sockets.find({userId}).exec();
+  if (sockets.length === 0) return;
 
-    const notifications = await getGroupedNotifications(userId);
+  const notifications = await getGroupedNotifications(userId);
 
-    for (const socket of sockets) {
-      io.to(socket.socketId).emit('events', notifications);
-    }
+  for (const socket of sockets) {
+    io.to(socket.socketId).emit('events', notifications);
   }
 });
 
@@ -66,15 +72,12 @@ io.on('connection', socket => {
   socket.on('setSocketId', async (data: ISocketMapping) => {
     try {
       await Sockets.create(data);
+      // Emit events
+      const notifications = await getGroupedNotifications(data.userId);
+      socket.emit('events', notifications);
     } catch (error) {
       console.error((error as Error).message);
     }
-  });
-
-  socket.on('getEvents', async () => {
-    // TODO: Get user ID from MongoDB with socket ID
-    // TODO: Get events
-    // TODO: Emit events
   });
 
   socket.on('disconnect', async () => {

@@ -15,7 +15,7 @@ export class ApiService {
     info: INotification[];
   } | null = null;
 
-  $events = this.socket.fromEvent<{
+  events$ = this.socket.fromEvent<{
     critical: INotification[];
     warning: INotification[];
     info: INotification[];
@@ -29,7 +29,7 @@ export class ApiService {
     afAuth.authState.subscribe(async user => {
       if (!!user) {
         const socketId = await this.connectSocketAndWaitForId();
-        this.socket.emit('setSocketId', {userId: user.uid, socketId});
+        this.socket.emit('setSocketId', {userId: 'foo', socketId});
       } else {
         socket.disconnect();
       }
