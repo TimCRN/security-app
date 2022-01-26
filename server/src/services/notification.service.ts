@@ -30,7 +30,7 @@ export const getGroupedNotifications = async (
     const notifications = await Notifications.find({
       resolved: false,
       userId,
-    }).exec();
+    }).sort({createdAt: -1});
     const grouped = groupNotificationsByType(notifications);
     return grouped;
   } catch (error) {
