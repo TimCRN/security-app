@@ -4,7 +4,7 @@ import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { first } from 'rxjs';
+import { first, Observable } from 'rxjs';
 import { SwPush } from '@angular/service-worker';
 
 @Component({
@@ -17,8 +17,6 @@ export class HomeComponent implements OnInit {
   isChildRoute = false;
   modalEvent: INotification | null = null;
   showModal = false;
-  // TODO: Move to notifications service and change to behaviorSubject
-  notificationsEnabled = false;
   enableNotificationsEvent: INotification = {
     userId: '',
     _id: '',
@@ -48,6 +46,7 @@ export class HomeComponent implements OnInit {
         this.prepareModal({eventId: segments[1].toString()});
       }
     });
+    this.api.requestEvents();
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {

@@ -22,6 +22,8 @@ export class ApiService {
     total: number;
   }>('events');
 
+  private uid: string | null = null;
+
   constructor(
     private http: HttpClient,
     private afAuth: AngularFireAuth,
@@ -29,6 +31,7 @@ export class ApiService {
   ) {
     afAuth.authState.subscribe(async user => {
       if (!!user) {
+        this.uid = user.uid;
         const socketId = await this.connectSocketAndWaitForId();
         this.socket.emit('setSocketId', {userId: user.uid, socketId});
       } else {
@@ -86,11 +89,16 @@ export class ApiService {
     )
   }
 
+  async requestEvents() {
+    if (this.uid === null) throw Error('No user ID');
+    this.socket.emit('requestEvents', {userId: this.uid});
+  }
+
   /**
    * Create a new WebSocket connection and wait until the connection ID is defined
    *
    * ! This function sucks
-   * ! sockket.connect is not async, meaning the connection variable can be read before it is defined
+   * ! socket.connect is not async, meaning the connection variable can be read before it is defined
    * ! (Possibly) infinite loop to check for ID definition should be fixed!
    *
    * @returns the connection ID

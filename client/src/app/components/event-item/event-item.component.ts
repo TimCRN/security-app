@@ -23,13 +23,14 @@ export class EventItemComponent implements OnInit {
     private api: ApiService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onRequestPermission() {
     this.notifications.subscribeToNotifications();
   }
 
   onShowEventModal() {
+    // this.router.navigate(['event', this.event._id], {replaceUrl: true});
     this.router.navigate(['event', this.event._id]);
   }
 

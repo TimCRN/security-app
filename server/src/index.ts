@@ -80,6 +80,11 @@ io.on('connection', socket => {
     }
   });
 
+  socket.on('requestEvents', async (data: {userId: string}) => {
+    const notifications = await getGroupedNotifications(data.userId);
+    socket.emit('events', notifications);
+  });
+
   socket.on('disconnect', async () => {
     await Sockets.deleteOne({socketId: socket.id});
     console.log(`Disconnected socket ${socket.id}`);
