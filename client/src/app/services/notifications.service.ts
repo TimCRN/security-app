@@ -73,7 +73,7 @@ export class NotificationsService {
 }
 
 interface PushNotification {
-  notification: {
+  notification: {    
     body: string;
     title: string;
     icon: string;
@@ -85,5 +85,6 @@ interface PushNotification {
         }
       }
     }
+    vibrate: number[];
   }
 }
