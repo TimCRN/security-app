@@ -1,4 +1,4 @@
-import { INotification } from 'src/app/services/api.service';
+import { ApiService, INotification } from 'src/app/services/api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -15,7 +15,8 @@ export class EventModalComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private api: ApiService
   ) {
     route.queryParamMap.subscribe(params => {
       if (params.has('src') && params.get('src') === 'push') {
@@ -24,9 +25,7 @@ export class EventModalComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-    console.log(this.event);
-  }
+  ngOnInit(): void {}
 
   onCloseModal() {
     if (this.cameFromPush) {
@@ -34,6 +33,11 @@ export class EventModalComponent implements OnInit {
     } else {
       window.history.back();
     }
+  }
+
+  async onResolve() {
+    await this.api.resolveEvent(this.event!._id);
+    this.onCloseModal();
   }
 
 }
