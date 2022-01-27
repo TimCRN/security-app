@@ -22,6 +22,8 @@ export class ApiService {
     total: number;
   }>('events');
 
+  private uid: string | null = null;
+
   constructor(
     private http: HttpClient,
     private afAuth: AngularFireAuth,
@@ -29,6 +31,7 @@ export class ApiService {
   ) {
     afAuth.authState.subscribe(async user => {
       if (!!user) {
+        this.uid = user.uid;
         const socketId = await this.connectSocketAndWaitForId();
         this.socket.emit('setSocketId', {userId: user.uid, socketId});
       } else {
@@ -84,6 +87,11 @@ export class ApiService {
     const res = await firstValueFrom(
       this.http.patch(endpoint, {})
     )
+  }
+
+  async requestEvents() {
+    if (this.uid === null) throw Error('No user ID');
+    this.socket.emit('requestEvents', {userId: this.uid});
   }
 
   /**

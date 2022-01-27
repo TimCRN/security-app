@@ -30,6 +30,7 @@ export class EventItemComponent implements OnInit {
   }
 
   onShowEventModal() {
+    // this.router.navigate(['event', this.event._id], {replaceUrl: true});
     this.router.navigate(['event', this.event._id]);
   }
 

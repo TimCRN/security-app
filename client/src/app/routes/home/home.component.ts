@@ -29,8 +29,8 @@ export class HomeComponent implements OnInit {
     updatedAt: ''
   }
 
-  events$!: Observable<any>;
-  notificationsEnabled$!: Observable<boolean>;
+  events$ = this.api.events$;
+  notificationsEnabled$ = this.notifications.enabled$;
 
   constructor(
     private notifications: NotificationsService,
@@ -40,14 +40,13 @@ export class HomeComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.events$ = this.api.events$;
-    this.notificationsEnabled$ = this.notifications.enabled$;
     // Show event modal if user navigated to a specific event
     this.route.url.pipe(first()).subscribe((segments: UrlSegment[]) => {
       if (segments.length === 2) {
         this.prepareModal({eventId: segments[1].toString()});
       }
     });
+    this.api.requestEvents();
   }
 
   async prepareModal(args: {event?: INotification, eventId?: string}) {
