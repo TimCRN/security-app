@@ -90,7 +90,7 @@ export class ApiService {
    * Create a new WebSocket connection and wait until the connection ID is defined
    *
    * ! This function sucks
-   * ! sockket.connect is not async, meaning the connection variable can be read before it is defined
+   * ! socket.connect is not async, meaning the connection variable can be read before it is defined
    * ! (Possibly) infinite loop to check for ID definition should be fixed!
    *
    * @returns the connection ID
