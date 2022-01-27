@@ -4,7 +4,7 @@ import { NotificationEvent } from './../../interfaces/notification-event';
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { first } from 'rxjs';
+import { first, Observable } from 'rxjs';
 import { SwPush } from '@angular/service-worker';
 
 @Component({
@@ -17,8 +17,6 @@ export class HomeComponent implements OnInit {
   isChildRoute = false;
   modalEvent: INotification | null = null;
   showModal = false;
-  // TODO: Move to notifications service and change to behaviorSubject
-  notificationsEnabled = false;
   enableNotificationsEvent: INotification = {
     userId: '',
     _id: '',
@@ -31,8 +29,8 @@ export class HomeComponent implements OnInit {
     updatedAt: ''
   }
 
-  events$ = this.api.events$;
-  notificationsEnabled$ = this.notifications.enabled$;
+  events$!: Observable<any>;
+  notificationsEnabled$!: Observable<boolean>;
 
   constructor(
     private notifications: NotificationsService,
@@ -42,6 +40,8 @@ export class HomeComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.events$ = this.api.events$;
+    this.notificationsEnabled$ = this.notifications.enabled$;
     // Show event modal if user navigated to a specific event
     this.route.url.pipe(first()).subscribe((segments: UrlSegment[]) => {
       if (segments.length === 2) {
