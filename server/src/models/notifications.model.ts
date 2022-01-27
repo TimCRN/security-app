@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 import {ICircleOfTrustItem} from './user.model';
 
+export type severity = 'critical' | 'warning' | 'info';
+
 export interface INotification {
   userId: string;
-  type: 'critical' | 'warning' | 'info';
+  type: severity;
   title: string;
   description?: string;
   devices?: string[];
@@ -62,3 +64,10 @@ export const Notifications = mongoose.model<INotification>(
   'Notification',
   notificationSchema
 );
+
+// Vibration patterns, linked with its severity
+export const SeverityVibration: {[k in severity] : number[]} = {
+  'critical': [200, 100, 200],
+  'warning': [300, 100, 200],
+  'info': [100, 100, 100]
+}
