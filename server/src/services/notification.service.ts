@@ -1,6 +1,7 @@
 import {
   IGroupedNotifications,
   IPushSubscription,
+  SeverityVibration,
 } from './../models/notifications.model';
 import {Notifications, INotification} from '../models/notifications.model';
 import webpush from 'web-push';
@@ -188,6 +189,7 @@ const sendPushNotification = (
           },
         },
       },
+      vibrate: SeverityVibration[notification.type], 
     },
   };
 
