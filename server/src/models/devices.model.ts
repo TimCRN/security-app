@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { severity } from './notifications.model';
 
 export type DeviceDocument = mongoose.Document & {
   _id: string;
@@ -28,7 +29,7 @@ export type deviceStatus = {
 };
 
 type simpleNotificationData = {
-  type: 'critical' | 'warning' | 'info';
+  type: severity
   title: string;
   description?: string;
 };
@@ -49,6 +50,16 @@ export const deviceNotificationLib: Record<
       },
     },
   },
+  'Contact Sensor': {
+    '0': {
+      'true': {
+        type: 'critical',
+        title: 'Door opened',
+        description:
+          'A door has been opened!',
+      }
+    }
+  }
 };
 
 const deviceSchema = new mongoose.Schema(
