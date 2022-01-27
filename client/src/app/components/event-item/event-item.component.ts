@@ -23,7 +23,7 @@ export class EventItemComponent implements OnInit {
     private api: ApiService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onRequestPermission() {
     this.notifications.subscribeToNotifications();

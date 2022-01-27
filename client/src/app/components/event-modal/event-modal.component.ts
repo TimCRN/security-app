@@ -1,6 +1,7 @@
 import { ApiService, INotification } from 'src/app/services/api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { format } from 'timeago.js';
 
 @Component({
   selector: 'app-event-modal',
@@ -38,6 +39,11 @@ export class EventModalComponent implements OnInit {
   async onResolve() {
     await this.api.resolveEvent(this.event!._id);
     this.onCloseModal();
+  }
+
+  formatDate(timestamp: string) {
+    const d = new Date(timestamp);
+    return d.toLocaleString();
   }
 
 }
