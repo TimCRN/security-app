@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -8,7 +9,7 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root',
 })
 export class ApiService {
-  rootUrl = 'http://localhost:8080';
+  rootUrl = environment.rootEndpoint;
   events: {
     critical: INotification[];
     warning: INotification[];
