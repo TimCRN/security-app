@@ -9,5 +9,5 @@ export const environment = {
   },
   production: true,
   vapidPublicKey: 'BHmcB-MSKFLWfOzUI-N93z8RzQaSbIygaSYkJdtfLuGEqWqM7oOlKEHP0jbeWra3wgO_r9buSQOqFkZxV8WvFgc',
-  rootEndpoint: 'http://localhost:8080'
+  rootEndpoint: 'https://f20b-217-62-93-176.ngrok.io'
 };
