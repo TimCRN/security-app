@@ -213,7 +213,8 @@ async function processChanges(device: DeviceInput) {
           );
           await createNotification({
             userId: user._id,
-            devices: [device._id],
+            // ? Could also store device IDs, but frontend would need to retrieve device names
+            devices: [device.name],
             title: nData.title,
             type: nData.type,
             description: nData.description?.replace(
