@@ -49,6 +49,16 @@ export const deviceNotificationLib: Record<
       },
     },
   },
+  'Contact Sensor': {
+    '0': {
+      'true': {
+        type: 'warning',
+        title: 'Door opened',
+        description:
+          'A door has been opened!',
+      }
+    }
+  }
 };
 
 const deviceSchema = new mongoose.Schema(
